@@ -17,46 +17,43 @@
     </div>
 
     <div id="content">
-        <section class="padding-bottom-60">
+        <section class="padding-top-10 padding-bottom-10">
             <div class="container">
-                <section class="padding-top-10 padding-bottom-10">
-                    <div class="container" style="width: auto;">
-                        <!-- heading -->
-                        <div class="heading">
-                            <h2>我的课程</h2>
-                            <hr>
-                        </div>
+                <!-- heading -->
+                <div class="heading">
+                    <h2>我的课程</h2>
+                    <hr>
+                </div>
 
-                        <!-- heading -->
-                        <div class="item-col-5">
-                            {% for user_course in all_user_course %}
-                                {% with course=user_course.course %}
-                                    <!-- Product -->
-                                    <a href="{% url 'course:course_detail' course.id %}">
-                                        <div class="product">
-                                            <article>
-                                                <img class="img-responsive" style="height: 180px; width: auto;"
-                                                     src="{% if course.image %}{{ course.image.url }}{% else %}{% static 'platform/images/default-course.png' %}{% endif %}" alt="">
-                                                <span class="sale-tag"><i class="fa fa-star-o"></i></span>
+                <!-- heading -->
+                <div class="item-col-5">
+                    {% for user_course in all_user_course %}
+                        {% with course=user_course.course %}
+                            <!-- Product -->
+                            <a href="{% url 'course:course_detail' course.id %}">
+                                <div class="product">
+                                    <article>
+                                        <img class="img-responsive" style="height: 180px; width: auto;"
+                                             src="{% if course.image %}{{ course.image.url }}{% else %}{% static 'platform/images/default-course.png' %}{% endif %}" alt="">
+                                        <span class="sale-tag"><i class="fa fa-star-o"></i></span>
 
-                                                <!-- Content -->
-                                                <span class="tag">{{ course_org }}</span>
-                                                <span class="tittle" style="min-height: 2px;">{{ course.name }}</span>
-                                                <!-- Reviews -->
-                                                <p class="rev"><i class="fa fa-group" title="参加人数"></i> {{ course.students }}
-                                                    <span class="margin-left-50"><i class="fa fa-star" title="收藏人数"></i> {{ course.fav_nums }}</span>
-                                                </p>
-                                                <div class="price">课时： {{ course.learn_times }}分钟</div>
-                                            </article>
-                                        </div>
-                                    </a>
-                                {% endwith %}
-                            {% endfor %}
+                                        <!-- Content -->
+                                        <span class="tag">{{ course_org }}</span>
+                                        <span class="tittle" style="min-height: 2px;">{{ course.name }}</span>
+                                        <!-- Reviews -->
+                                        <p class="rev"><i class="fa fa-group" title="参加人数"></i> {{ course.students }}
+                                            <span class="margin-left-50"><i class="fa fa-star" title="收藏人数"></i> {{ course.fav_nums }}</span>
+                                        </p>
+                                        <div class="price">课时： {{ course.learn_times }}分钟</div>
+                                    </article>
+                                </div>
+                            </a>
+                        {% endwith %}
+                    {% endfor %}
 
-                        </div>
-                    </div>
-                </section>
+                </div>
             </div>
         </section>
+
     </div>
 {% endblock %}

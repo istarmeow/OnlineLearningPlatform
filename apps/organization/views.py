@@ -7,6 +7,8 @@ from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 from .models import CourseOrg, CityDict, Teacher
 from .forms import UserAskForm
 from operation.models import UserFavorite
+from courses.models import Course
+from organization.models import Teacher
 
 
 class OrgListView(View):
@@ -90,6 +92,10 @@ class OrgHomeView(View):
     def get(self, request, org_id):
         # 通过id找到机构
         course_org = CourseOrg.objects.get(id=org_id)
+
+        # 点击数+1
+        course_org.click_nums += 1
+        course_org.save(update_fields=['click_nums'])
 
         # 通过机构找到这个机构的课程和教师，并按一些数据进行排序
         all_course = course_org.courses.all().order_by('-students', '-fav_nums', 'click_nums')[:4]
@@ -182,6 +188,10 @@ class OrgDescView(View):
 
 # 机构收藏或取消收藏
 class AddFavView(View):
+    # (1, "课程"),
+    # (2, "课程机构"),
+    # (3, "讲师")
+
     def post(self, request):
         # 收藏的不管是课程，讲师，还是机构，都是记录他们的id，如果没取到把它设置未0，避免查询时异常
         fav_id = request.POST.get('fav_id', 0)
@@ -199,8 +209,23 @@ class AddFavView(View):
         if exist_records:
             # 如果已经存在，表明用户取消收藏
             exist_records.delete()
-            # 机构模型中存储的收藏数减1
-            CourseOrg.objects.get(id=fav_id).change_fav_nums(add=-1)
+            if int(fav_type) == 2:
+                # 机构模型中存储的收藏数减1
+                CourseOrg.objects.get(id=fav_id).change_fav_nums(add=-1)
+            elif int(fav_type) == 1:
+                # 课程收藏-1
+                course = Course.objects.get(id=fav_type)
+                course.fav_nums -= 1
+                if course.fav_nums < 0:
+                    course.fav_nums = 0  # 避免负数出现
+                course.save(update_fields=['fav_nums'])
+            elif int(fav_type) == 3:
+                # 讲师收藏-1
+                teacher = Teacher.objects.get(id=fav_id)
+                teacher.fav_nums -= 1
+                if teacher.fav_nums < 0:
+                    teacher.fav_nums = 0  # 避免负数出现
+                teacher.save(update_fields=['fav_nums'])
             return HttpResponse('{"fav_status":"success", "fav_msg":"添加收藏"}', content_type='application/json')
         else:
             user_fav = UserFavorite()
@@ -210,8 +235,20 @@ class AddFavView(View):
                 user_fav.fav_type = fav_type
                 user_fav.user = request.user
                 user_fav.save()
-                # 机构模型中存储的收藏数加1
-                CourseOrg.objects.get(id=fav_id).change_fav_nums(add=1)
+
+                if int(fav_type) == 2:
+                    # 机构模型中存储的收藏数加1
+                    CourseOrg.objects.get(id=fav_id).change_fav_nums(add=1)
+                elif int(fav_type) == 1:
+                    # 课程收藏-1
+                    course = Course.objects.get(id=fav_type)
+                    course.fav_nums += 1
+                    course.save(update_fields=['fav_nums'])
+                elif int(fav_type) == 3:
+                    # 讲师收藏-1
+                    teacher = Teacher.objects.get(id=fav_id)
+                    teacher.fav_nums += 1
+                    teacher.save(update_fields=['fav_nums'])
                 return HttpResponse('{"fav_status":"success", "fav_msg":"取消收藏"}', content_type='application/json')
             else:
                 return HttpResponse('{"fav_status":"fail", "fav_msg":"收藏出错"}', content_type='application/json')

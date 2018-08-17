@@ -3,7 +3,7 @@
 
 from django.urls import path, re_path
 
-from .views import UserCenterInfoView, UserModifypwdView, UserImageUploadView, ModifyEmailSendCodeView, SaveEmailModifyView, MyCourseView, MyFavoriteView
+from .views import UserCenterInfoView, UserModifypwdView, UserImageUploadView, ModifyEmailSendCodeView, SaveEmailModifyView, MyCourseView, MyFavoriteView, MyMessageView
 
 app_name = 'users'
 
@@ -16,5 +16,6 @@ urlpatterns = [
     path('email_modify/save/', SaveEmailModifyView.as_view(), name='user_save_email_modify'),  # 用户保存邮箱修改
     path('my_course/', MyCourseView.as_view(), name='my_course'),  # 我的课程
     path('my_favorite/', MyFavoriteView.as_view(), name='my_favorite'),  # 我的收藏
+    path('my_message/', MyMessageView.as_view(), name='my_message'),  # 我的消息
 ]
 

@@ -43,6 +43,8 @@ class CourseOrg(models.Model):
 
     def change_fav_nums(self, add=1):
         self.fav_nums += add
+        if self.fav_nums < 0:
+            self.fav_nums = 0
         self.save(update_fields=['fav_nums'])
 
     def __str__(self):

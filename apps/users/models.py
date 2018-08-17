@@ -19,6 +19,11 @@ class UserProfile(AbstractUser):
     mobile = models.CharField(max_length=11, null=True, blank=True, verbose_name='电话')
     image = models.ImageField(upload_to='image/%Y/%m', default='image/default.jpg', blank=True, null=True, max_length=100, verbose_name='头像')
 
+    def get_unread_nums(self):
+        # 获取用户未读消息，import需要放在这儿，如果放在头部，会产生循环import
+        from operation.models import UserMessage
+        return UserMessage.objects.filter(user=self.id, has_read=False).count()
+
     # Meta信息，即后台栏目名
     class Meta:
         verbose_name_plural = verbose_name = '用户信息'

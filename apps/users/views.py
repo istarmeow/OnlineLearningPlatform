@@ -1,5 +1,5 @@
-from django.shortcuts import render, HttpResponse
-from django.contrib.auth import login, authenticate
+from django.shortcuts import render, HttpResponse, HttpResponseRedirect
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.backends import ModelBackend
 from django.db.models import Q
 from django.views.generic import View
@@ -11,11 +11,12 @@ import json
 
 from captcha.models import CaptchaStore
 from captcha.helpers import captcha_image_url
+from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import UserProfile, EmailVerifyRecord
 from .forms import LoginForm, RegisterForm, ForgetPwdForm, ModifyPwdForm, UserImageUploadForm, UserCenterInfoForm
 from utils.email_send import send_register_email
-from operation.models import UserCourse, UserFavorite
+from operation.models import UserCourse, UserFavorite, UserMessage
 from courses.models import Course
 from organization.models import Teacher, CourseOrg
 
@@ -89,6 +90,15 @@ class LoginView(View):
                           })
 
 
+# 用户退出
+class LogoutView(View):
+    def get(self, request):
+        logout(request)
+        # 把url名称反解成整个url地址，然后供HttpResponseRedirect调用
+        from django.urls import reverse
+        return HttpResponseRedirect(reverse('index'))
+
+
 # 用户注册
 class RegisterView(View):
     def get(self, request):
@@ -129,6 +139,12 @@ class RegisterView(View):
                 # 默认激活状态True，需要改为False
                 user_profile.is_active = False
                 user_profile.save()
+
+                # 写入欢迎注册消息到用户消息
+                user_message = UserMessage()
+                user_message.user = user_profile.id  # 接收用户的id
+                user_message.message = '欢迎注册在线学习平台'
+                user_message.save()
 
                 # 发送注册激活邮件
                 send_register_email(request_uri=request.build_absolute_uri(), email=user_name, send_type='register')
@@ -434,3 +450,28 @@ class MyFavoriteView(LoginRequiredMixin, View):
         all_user_fav_org = UserFavorite.objects.filter(user=request.user, fav_type=2)
         all_fav_org = [CourseOrg.objects.get(id=user_fav_org.fav_id) for user_fav_org in all_user_fav_org]
         return render(request, 'usercenter-fav.html', locals())
+
+
+# 用户消息
+class MyMessageView(LoginRequiredMixin, View):
+    login_url = '/login/'
+    redirect_field_name = 'next'
+
+    def get(self, request):
+        all_user_msg = UserMessage.objects.all().filter(user=request.user.id)
+
+        # 当访问我的消息时，所有未读消息变为已读
+        UserMessage.objects.filter(user=request.user.id, has_read=False).update(has_read=True)
+
+        # 分页
+        try:
+            page = request.GET.get('page', 1)
+        except PageNotAnInteger:
+            page = 1
+        # 这里指从all_course中取8个出来，每页显示8个
+        p = Paginator(all_user_msg, 8, request=request)
+        all_user_msg = p.page(page)
+        return render(request, 'usercenter-msg.html', locals())
+
+
+

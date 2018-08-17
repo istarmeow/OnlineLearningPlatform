@@ -52,16 +52,17 @@
                 <ul>
                     {% if user.is_authenticated %}
                         <li><a href="{% url 'users:user_info' %}"><b>{{ user.nick_name }}（{{ user.username }}）</b> </a></li>
+                        <li><a href="{% url 'usercenter:my_message' %}"><i class="fa fa-bullhorn"></i> {{ user.get_unread_nums }}</a></li>
                     <li>
                         <select class="selectpicker" id="usercenter_choose">
                             <option value="">用户功能</option>
                             <option value="user_center" {% if '/info/' in request.path %} selected {% endif %}>个人中心</option>
                             <option value="my_course" {% if '/my_course/' in request.path %} selected {% endif %}>我的课程</option>
                             <option value="my_fav" {% if '/my_favorite/' in request.path %} selected {% endif %}>我的收藏</option>
-                            <option>我的消息</option>
+                            <option value="my_msg" {% if '/my_message/' in request.path %} selected {% endif %}>我的消息</option>
                         </select>
                     </li>
-                    <li><a href="#">退出 </a></li>
+                    <li><a href="{% url 'logout' %}">退出 </a></li>
                     {% else %}
                     <li><a href="{% url 'login' %}">登录 </a></li>
                     <li><a href="{% url 'register' %}">注册 </a></li>
@@ -313,6 +314,8 @@
             redirect_url = "{% url 'usercenter:my_course' %}"
         } else if (choose === 'my_fav') {
             redirect_url = "{% url 'usercenter:my_favorite' %}"
+        } else if (choose === 'my_msg') {
+            redirect_url = "{% url 'usercenter:my_message' %}"
         }
         window.location.href = redirect_url;
     })

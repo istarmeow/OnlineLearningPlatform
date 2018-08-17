@@ -22,7 +22,7 @@ from django.urls import include
 
 import xadmin
 
-from users.views import user_login, LoginView, RegisterView, ActiveUserView, ForgetPwdView, RestpwdView, ModifypwdView
+from users.views import user_login, LoginView, RegisterView, ActiveUserView, ForgetPwdView, RestpwdView, ModifypwdView, LogoutView
 
 from organization.views import OrgListView
 
@@ -33,6 +33,7 @@ urlpatterns = [
     # path('login/', TemplateView.as_view(template_name='login.html'), name='login'),
     # path('login/', user_login, name='login'),
     path('login/', LoginView.as_view(), name='login'),  # 基于类方法实现登录,这里是调用它的方法
+    path('logout/', LogoutView.as_view(), name='logout'),  # 退出登录
     path('register/', RegisterView.as_view(), name='register'),
     re_path('register/active/(?P<active_code>.*)/', ActiveUserView.as_view(), name='user_active'),  # 激活
     path('captcha/', include('captcha.urls')),

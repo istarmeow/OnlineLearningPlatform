@@ -1,10 +1,57 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% load static %}
+
+{% block title %}我的消息 - {{ block.super }}{% endblock %}
+
+{% block content %}
+    <!-- Linking -->
+    <div class="linking">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li><a href="/">主页</a></li>
+                <li><a href="{% url 'usercenter:user_info' %}">个人中心</a></li>
+                <li class="active">我的消息</li>
+            </ol>
+        </div>
+    </div>
+
+    <div id="content">
+        <section class="padding-top-10 padding-bottom-10">
+            <div class="container">
+                <!-- heading -->
+                <div class="heading">
+                    <h2>我的消息</h2>
+                    <hr>
+                </div>
+                {% for user_msg in all_user_msg.object_list %}
+                    <p style="color: #BEBEBE"><i class="fa fa-clock-o"></i> {{ user_msg.add_time }}</p>
+                    <p class="padding-bottom-20 padding-left-15">{{ user_msg.message }}</p>
+                {% endfor %}
+
+                <ul class="container pagination padding-top-30">
+                    {% if all_user_msg.has_previous %}
+                        <li><a href="?{{ all_user_msg.previous_page_number.querystring }}" aria-label="Previous"> <i class="fa fa-angle-left"></i> </a></li>
+                    {% endif %}
+
+                    {% for page in all_user_msg.pages %}
+                        {% if page %}
+                            {% ifequal page all_user_msg.number %}
+                                <li><a class="active" href="?{{ page.querystring }}">{{ page }}</a></li>
+                            {% else %}
+                                <li><a href="?{{ page.querystring }}">{{ page }}</a></li>
+                            {% endifequal %}
+                        {% else %}
+                            <li><a href="">...</a></li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if all_user_msg.has_next %}
+                        <li><a href="?{{ all_user_msg.next_page_number.querystring }}" aria-label="Next"> <i class="fa fa-angle-right"></i> </a></li>
+                    {% endif %}
+                </ul>
+
+            </div>
+        </section>
+    </div>
+{% endblock %}
