@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}我的收藏 - {{ block.super }}{% endblock %}
+
+{% block content %}
+    <!-- Linking -->
+    <div class="linking">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li><a href="/">主页</a></li>
+                <li><a href="{% url 'usercenter:user_info' %}">个人中心</a></li>
+                <li class="active">我的收藏</li>
+            </ol>
+        </div>
+    </div>
+
+    <div id="content">
+        <!-- 收藏的 -->
+        <section class="padding-top-10 padding-bottom-10">
+            <div class="container">
+                <!-- heading -->
+                <div class="heading">
+                    <h2>我的个人收藏</h2>
+                </div>
+
+
+                <div class="item-tabs-sec">
+                    <!-- Nav tabs -->
+                    <ul class="nav" role="tablist">
+                        <li role="presentation" class="active"><a href="#fav_course" role="tab" data-toggle="tab">课程</a></li>
+                        <li role="presentation"><a href="#fav_teacher" role="tab" data-toggle="tab">讲师</a></li>
+                        <li role="presentation"><a href="#fav_org" role="tab" data-toggle="tab">机构</a></li>
+                    </ul>
+                </div>
+
+                <div class="tab-content">
+                    <br>
+                    <div role="tabpanel" class="tab-pane fade in active" id="fav_course">
+                        <!-- heading -->
+                        <div class="item-col-5">
+                            {% for course in all_fav_course %}
+                                <!-- Product -->
+                                <a href="{% url 'course:course_detail' course.id %}">
+                                    <div class="product">
+                                        <article>
+                                            <img class="img-responsive" style="height: 180px; width: auto;"
+                                                 src="{% if course.image %}{{ course.image.url }}{% else %}{% static 'platform/images/default-course.png' %}{% endif %}" alt="">
+                                            <span class="sale-tag"><i class="fa fa-star-o"></i></span>
+
+                                            <!-- Content -->
+                                            <span class="tag">{{ course_org }}</span>
+                                            <span class="tittle" style="min-height: 2px;">{{ course.name }}</span>
+                                            <!-- Reviews -->
+                                            <p class="rev"><i class="fa fa-group" title="参加人数"></i> {{ course.students }}
+                                                <span class="margin-left-50"><i class="fa fa-star" title="收藏人数"></i> {{ course.fav_nums }}</span>
+                                            </p>
+                                            <div class="price">课时： {{ course.learn_times }}分钟</div>
+                                        </article>
+                                    </div>
+                                </a>
+                            {% endfor %}
+
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane fade" id="fav_teacher">
+                        <div class="item-col-5">
+                            {% for teacher in all_fav_teacher %}
+                                <!-- Product -->
+                                <a href="{% url 'teacher:teacher_detail' teacher.id %}">
+                                    <div class="product">
+                                        <article>
+                                            <img class="img-responsive" style="height: 180px; width: auto;"
+                                                 src="{% if teacher.image %}{{ teacher.image.url }}{% else %}{% static 'platform/images/default-user.jpg' %}{% endif %}" alt="">
+                                            {#                                                <span class="sale-tag"><i class="fa fa-fire"></i></span>#}
+
+                                            <!-- Content -->
+                                            <span class="tag">{{ teacher.org.name }}</span>
+                                            <div class="tittle" style="min-height: 2px;">昵称： {{ teacher.name }}</div>
+                                            <p>{{ teacher.points }}</p>
+                                            <!-- Reviews -->
+                                            <p class="rev"><i class="fa fa-hand-pointer-o" title="点击数"></i> {{ teacher.click_nums }}
+                                                <span class="margin-left-50"><i class="fa fa-star" title="收藏人数"></i> {{ teacher.fav_nums }}</span>
+                                            </p>
+                                            <div class="price">公司：{{ teacher.work_company }}</div>
+                                        </article>
+                                    </div>
+                                </a>
+                            {% endfor %}
+
+                            </a>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane fade" id="fav_org">
+                        <div class="item-col-5">
+                            {% for org in all_fav_org %}
+                                <!-- Product -->
+                                <a href="{% url 'organization:org_home' org.id %}">
+                                    <div class="product">
+                                        <article>
+                                            <img class="img-responsive" style="height: 180px; width: auto;"
+                                                 src="{% if org.image %}{{ org.image.url }}{% else %}{% static 'platform/images/default-org.png' %}{% endif %}" alt="">
+                                            {#                                                <span class="sale-tag"><i class="fa fa-fire"></i></span>#}
+
+                                            <!-- Content -->
+                                            <span class="tag">{{ org.desc }}</span>
+                                            <div class="tittle" style="min-height: 2px;">{{ org.name }}</div>
+                                            <!-- Reviews -->
+                                            <p class="rev"><i class="fa fa-hand-pointer-o" title="点击数"></i> {{ org.click_nums }}
+                                                <span class="margin-left-50"><i class="fa fa-star" title="收藏人数"></i> {{ org.fav_nums }}</span>
+                                            </p>
+                                            <div class="price">地址：{{ org.city }}</div>
+                                        </article>
+                                    </div>
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock %}

@@ -1,0 +1,441 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}首页 - {{ block.super }}{% endblock %}
+
+{% block content %}
+
+    <!-- Slid Sec -->
+    <section class="slid-sec">
+        <div class="container">
+            <div class="container-fluid">
+                <div class="row">
+
+                    <!-- Main Slider  -->
+                    <div class="col-md-9 no-padding">
+
+                        <!-- Main Slider Start -->
+                        <div class="tp-banner-container">
+                            <div class="tp-banner">
+                                <ul>
+
+                                    <!-- SLIDE  -->
+                                    <li data-transition="random" data-slotamount="7" data-masterspeed="300" data-saveperformance="off">
+                                        <!-- MAIN IMAGE -->
+                                        <img src="images/slider-img-1.jpg" alt="slider" data-bgposition="center bottom" data-bgfit="cover" data-bgrepeat="no-repeat">
+
+                                        <!-- LAYER NR. 1 -->
+                                        <div class="tp-caption sfl tp-resizeme"
+                                             data-x="left" data-hoffset="60"
+                                             data-y="center" data-voffset="-110"
+                                             data-speed="800"
+                                             data-start="800"
+                                             data-easing="Power3.easeInOut"
+                                             data-splitin="chars"
+                                             data-splitout="none"
+                                             data-elementdelay="0.03"
+                                             data-endelementdelay="0.4"
+                                             data-endspeed="300"
+                                             style="z-index: 5; font-size:30px; font-weight:500; color:#888888;  max-width: auto; max-height: auto; white-space: nowrap;">High Quality VR Glasses
+                                        </div>
+
+                                        <!-- LAYER NR. 2 -->
+                                        <div class="tp-caption sfr tp-resizeme"
+                                             data-x="left" data-hoffset="60"
+                                             data-y="center" data-voffset="-60"
+                                             data-speed="800"
+                                             data-start="1000"
+                                             data-easing="Power3.easeInOut"
+                                             data-splitin="chars"
+                                             data-splitout="none"
+                                             data-elementdelay="0.03"
+                                             data-endelementdelay="0.1"
+                                             data-endspeed="300"
+                                             style="z-index: 6; font-size:50px; color:#0088cc; font-weight:800; white-space: nowrap;">3D Daydream View
+                                        </div>
+
+                                        <!-- LAYER NR. 3 -->
+                                        <div class="tp-caption sfl tp-resizeme"
+                                             data-x="left" data-hoffset="60"
+                                             data-y="center" data-voffset="10"
+                                             data-speed="800"
+                                             data-start="1200"
+                                             data-easing="Power3.easeInOut"
+                                             data-splitin="none"
+                                             data-splitout="none"
+                                             data-elementdelay="0.1"
+                                             data-endelementdelay="0.1"
+                                             data-endspeed="300"
+                                             style="z-index: 7;  font-size:24px; color:#888888; font-weight:500; max-width: auto; max-height: auto; white-space: nowrap;">Starting at
+                                        </div>
+
+                                        <!-- LAYER NR. 1 -->
+                                        <div class="tp-caption sfr tp-resizeme"
+                                             data-x="left" data-hoffset="210"
+                                             data-y="center" data-voffset="5"
+                                             data-speed="800"
+                                             data-start="1300"
+                                             data-easing="Power3.easeInOut"
+                                             data-splitin="chars"
+                                             data-splitout="none"
+                                             data-elementdelay="0.03"
+                                             data-endelementdelay="0.4"
+                                             data-endspeed="300"
+                                             style="z-index: 5; font-size:36px; font-weight:800; color:#000;  max-width: auto; max-height: auto; white-space: nowrap;">$49.99
+                                        </div>
+
+                                        <!-- LAYER NR. 4 -->
+                                        <div class="tp-caption lfb tp-resizeme scroll"
+                                             data-x="left" data-hoffset="60"
+                                             data-y="center" data-voffset="80"
+                                             data-speed="800"
+                                             data-start="1300"
+                                             data-easing="Power3.easeInOut"
+                                             data-elementdelay="0.1"
+                                             data-endelementdelay="0.1"
+                                             data-endspeed="300"
+                                             data-scrolloffset="0"
+                                             style="z-index: 8;"><a href="#." class="btn-round big">Shop Now</a></div>
+                                    </li>
+
+                                    <!-- SLIDE  -->
+                                    <li data-transition="random" data-slotamount="7" data-masterspeed="300" data-saveperformance="off">
+                                        <!-- MAIN IMAGE -->
+                                        <img src="images/slider-img-2.jpg" alt="slider" data-bgposition="center bottom" data-bgfit="cover" data-bgrepeat="no-repeat">
+
+                                        <!-- LAYER NR. 1 -->
+                                        <div class="tp-caption sfl tp-resizeme"
+                                             data-x="left" data-hoffset="60"
+                                             data-y="center" data-voffset="-110"
+                                             data-speed="800"
+                                             data-start="800"
+                                             data-easing="Power3.easeInOut"
+                                             data-splitin="chars"
+                                             data-splitout="none"
+                                             data-elementdelay="0.03"
+                                             data-endelementdelay="0.4"
+                                             data-endspeed="300"
+                                             style="z-index: 5; font-size:30px; font-weight:500; color:#888888;  max-width: auto; max-height: auto; white-space: nowrap;">No restocking fee ($35
+                                            savings)
+                                        </div>
+
+                                        <!-- LAYER NR. 2 -->
+                                        <div class="tp-caption sfr tp-resizeme"
+                                             data-x="left" data-hoffset="60"
+                                             data-y="center" data-voffset="-60"
+                                             data-speed="800"
+                                             data-start="1000"
+                                             data-easing="Power3.easeInOut"
+                                             data-splitin="chars"
+                                             data-splitout="none"
+                                             data-elementdelay="0.03"
+                                             data-endelementdelay="0.1"
+                                             data-endspeed="300"
+                                             style="z-index: 6; font-size:50px; color:#0088cc; font-weight:800; white-space: nowrap;">M75 Sport Watch
+                                        </div>
+
+                                        <!-- LAYER NR. 3 -->
+                                        <div class="tp-caption sfl tp-resizeme"
+                                             data-x="left" data-hoffset="60"
+                                             data-y="center" data-voffset="10"
+                                             data-speed="800"
+                                             data-start="1200"
+                                             data-easing="Power3.easeInOut"
+                                             data-splitin="none"
+                                             data-splitout="none"
+                                             data-elementdelay="0.1"
+                                             data-endelementdelay="0.1"
+                                             data-endspeed="300"
+                                             style="z-index: 7;  font-size:24px; color:#888888; font-weight:500; max-width: auto; max-height: auto; white-space: nowrap;">Now Only
+                                        </div>
+
+                                        <!-- LAYER NR. 1 -->
+                                        <div class="tp-caption sfr tp-resizeme"
+                                             data-x="left" data-hoffset="210"
+                                             data-y="center" data-voffset="5"
+                                             data-speed="800"
+                                             data-start="1300"
+                                             data-easing="Power3.easeInOut"
+                                             data-splitin="chars"
+                                             data-splitout="none"
+                                             data-elementdelay="0.03"
+                                             data-endelementdelay="0.4"
+                                             data-endspeed="300"
+                                             style="z-index: 5; font-size:36px; font-weight:800; color:#000;  max-width: auto; max-height: auto; white-space: nowrap;">$320.99
+                                        </div>
+
+                                        <!-- LAYER NR. 4 -->
+                                        <div class="tp-caption lfb tp-resizeme scroll"
+                                             data-x="left" data-hoffset="60"
+                                             data-y="center" data-voffset="80"
+                                             data-speed="800"
+                                             data-start="1300"
+                                             data-easing="Power3.easeInOut"
+                                             data-elementdelay="0.1"
+                                             data-endelementdelay="0.1"
+                                             data-endspeed="300"
+                                             data-scrolloffset="0"
+                                             style="z-index: 8;"><a href="#." class="btn-round big">Shop Now</a></div>
+                                    </li>
+
+                                    <!-- SLIDE  -->
+                                    <li data-transition="random" data-slotamount="7" data-masterspeed="300" data-saveperformance="off">
+                                        <!-- MAIN IMAGE -->
+                                        <img src="images/slider-img-3.jpg" alt="slider" data-bgposition="center bottom" data-bgfit="cover" data-bgrepeat="no-repeat">
+
+                                        <!-- LAYER NR. 1 -->
+                                        <div class="tp-caption sfl tp-resizeme"
+                                             data-x="left" data-hoffset="60"
+                                             data-y="center" data-voffset="-110"
+                                             data-speed="800"
+                                             data-start="800"
+                                             data-easing="Power3.easeInOut"
+                                             data-splitin="chars"
+                                             data-splitout="none"
+                                             data-elementdelay="0.03"
+                                             data-endelementdelay="0.4"
+                                             data-endspeed="300"
+                                             style="z-index: 5; font-size:30px; font-weight:500; color:#888888;  max-width: auto; max-height: auto; white-space: nowrap;">Get Free Bluetooth when buy
+                                        </div>
+
+                                        <!-- LAYER NR. 2 -->
+                                        <div class="tp-caption sfr tp-resizeme"
+                                             data-x="left" data-hoffset="60"
+                                             data-y="center" data-voffset="-60"
+                                             data-speed="800"
+                                             data-start="1000"
+                                             data-easing="Power3.easeInOut"
+                                             data-splitin="chars"
+                                             data-splitout="none"
+                                             data-elementdelay="0.03"
+                                             data-endelementdelay="0.1"
+                                             data-endspeed="300"
+                                             style="z-index: 6; font-size:50px; color:#0088cc; font-weight:800; white-space: nowrap;">Flat SmartWatch
+                                        </div>
+
+                                        <!-- LAYER NR. 3 -->
+                                        <div class="tp-caption sfl tp-resizeme"
+                                             data-x="left" data-hoffset="60"
+                                             data-y="center" data-voffset="0"
+                                             data-speed="800"
+                                             data-start="1200"
+                                             data-easing="Power3.easeInOut"
+                                             data-splitin="none"
+                                             data-splitout="none"
+                                             data-elementdelay="0.1"
+                                             data-endelementdelay="0.1"
+                                             data-endspeed="300"
+                                             style="z-index: 7;  font-size:24px; color:#888888; font-weight:500; max-width: auto; max-height: auto; white-space: nowrap;">Combo Only:
+                                        </div>
+
+                                        <!-- LAYER NR. 1 -->
+                                        <div class="tp-caption sfr tp-resizeme"
+                                             data-x="left" data-hoffset="240"
+                                             data-y="center" data-voffset=" -5"
+                                             data-speed="800"
+                                             data-start="1300"
+                                             data-easing="Power3.easeInOut"
+                                             data-splitin="chars"
+                                             data-splitout="none"
+                                             data-elementdelay="0.03"
+                                             data-endelementdelay="0.4"
+                                             data-endspeed="300"
+                                             style="z-index: 5; font-size:36px; font-weight:800; color:#000;  max-width: auto; max-height: auto; white-space: nowrap;">$590.00
+                                        </div>
+
+                                        <!-- LAYER NR. 4 -->
+                                        <div class="tp-caption lfb tp-resizeme scroll"
+                                             data-x="left" data-hoffset="60"
+                                             data-y="center" data-voffset="80"
+                                             data-speed="800"
+                                             data-start="1300"
+                                             data-easing="Power3.easeInOut"
+                                             data-elementdelay="0.1"
+                                             data-endelementdelay="0.1"
+                                             data-endspeed="300"
+                                             data-scrolloffset="0"
+                                             style="z-index: 8;"><a href="#." class="btn-round big">Shop Now</a></div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Main Slider  -->
+                    <div class="col-md-3 no-padding">
+
+                        <!-- New line required  -->
+                        <div class="product">
+                            <div class="like-bnr">
+                                <div class="position-center-center">
+                                    <h5>New line required</h5>
+                                    <h4>Smartphone s7</h4>
+                                    <span class="price">$259.99</span></div>
+                            </div>
+                        </div>
+
+                        <!-- Weekly Slaes  -->
+                        <div class="week-sale-bnr">
+                            <h4>Weekly <span>Sale!</span></h4>
+                            <p>Saving up to 50% off all online
+                                store items this week.</p>
+                            <a href="#." class="btn-round">Shop now</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content -->
+    <div id="content">
+
+        <!-- Shipping Info -->
+        <section class="shipping-info">
+            <div class="container">
+                <ul>
+
+                    <!-- Free Shipping -->
+                    <li>
+                        <div class="media-left"><i class="flaticon-delivery-truck-1"></i></div>
+                        <div class="media-body">
+                            <h5>专业权威</h5>
+                            <span>好评度极高</span></div>
+                    </li>
+                    <!-- Money Return -->
+                    <li>
+                        <div class="media-left"><i class="flaticon-arrows"></i></div>
+                        <div class="media-body">
+                            <h5>课程最新</h5>
+                            <span>课程保持最新</span></div>
+                    </li>
+                    <!-- Support 24/7 -->
+                    <li>
+                        <div class="media-left"><i class="flaticon-operator"></i></div>
+                        <div class="media-body">
+                            <h5>名师授课</h5>
+                            <span>专业教师课程指导</span></div>
+                    </li>
+                    <!-- Safe Payment -->
+                    <li>
+                        <div class="media-left"><i class="flaticon-business"></i></div>
+                        <div class="media-body">
+                            <h5>数据真实</h5>
+                            <span> </span></div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+
+        <!-- Top Selling Week -->
+        <section class="padding-top-60 padding-bottom-30">
+            <div class="container">
+
+                <!-- heading -->
+                <div class="heading">
+                    <h2>公开课程</h2>
+                    <hr>
+                </div>
+
+                <!-- Items -->
+                <div class="item-col-5">
+
+                    <!-- Product -->
+                    <div class="product col-2x">
+                        <div class="like-bnr">
+                            <div class="position-center-center">
+                                <h5>Smart Watch 2.0</h5>
+                                <p>Space Gray Aluminum Case
+                                    with Black/Volt Real Sport Band <span>38mm | 42mm</span></p>
+                                <a href="#." class="btn-round">View Detail</a></div>
+                        </div>
+                    </div>
+
+                    <!-- Product -->
+                    <div class="product">
+                        <article><img class="img-responsive" src="images/item-img-1-6.jpg" alt=""> <span class="sale-tag">-25%</span>
+
+                            <!-- Content -->
+                            <span class="tag">Tablets</span> <a href="#." class="tittle">Mp3 Sumergible Deportivo Slim Con 8GB</a>
+                            <!-- Reviews -->
+                            <p class="rev"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i> <i class="fa fa-star"></i> <span
+                                    class="margin-left-10">5 Review(s)</span></p>
+                            <div class="price">$350.00 <span>$200.00</span></div>
+                            <a href="#." class="cart-btn"><i class="icon-basket-loaded"></i></a></article>
+                    </div>
+
+                    <!-- Product -->
+
+
+                    <!-- Product -->
+                    <div class="product">
+                        <article><img class="img-responsive" src="images/item-img-1-8.jpg" alt=""> <span class="new-tag">New</span>
+
+                            <!-- Content -->
+                            <span class="tag">Accessories</span> <a href="#." class="tittle">Teclado Inalambrico Bluetooth Con Air Mouse</a>
+                            <!-- Reviews -->
+                            <p class="rev"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i> <i class="fa fa-star-o"></i> <span
+                                    class="margin-left-10">5 Review(s)</span></p>
+                            <div class="price">$350.00</div>
+                            <a href="#." class="cart-btn"><i class="icon-basket-loaded"></i></a></article>
+                    </div>
+
+                    <!--                需要8个小项-->
+
+
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Top Selling Week -->
+        <section class="light-gry-bg padding-top-60 padding-bottom-60">
+            <div class="container">
+
+                <!-- heading -->
+                <div class="heading">
+                    <h2>课程机构</h2>
+                    <hr>
+                </div>
+                <div id="blog-slide" class="with-nav">
+
+                    <!-- Blog Post -->
+                    <div class="blog-post">
+                        <article><img class="img-responsive" src="images/blog-img-1.jpg" alt=""> <span><i class="fa fa-bookmark-o"></i> 25 Dec, 2017</span> <span><i class="fa fa-comment-o"></i> 86 Comments</span>
+                            <a href="#." class="tittle">It’s why there’s nothing else like Mac. </a>
+                            <p>Etiam porttitor ante non tellus pulvinar, non vehicula lorem fermentum. Nulla vitae efficitur mi [...] </p>
+                            <a href="#.">Readmore</a></article>
+                    </div>
+
+                    <!-- Blog Post -->
+                    <div class="blog-post">
+                        <article><img class="img-responsive" src="images/blog-img-2.jpg" alt=""> <span><i class="fa fa-bookmark-o"></i> 25 Dec, 2017</span> <span><i class="fa fa-comment-o"></i> 86 Comments</span>
+                            <a href="#." class="tittle">Get the power to take your business to the
+                                next level. </a>
+                            <p>Etiam porttitor ante non tellus pulvinar, non vehicula lorem fermentum. Nulla vitae efficitur mi [...] </p>
+                            <a href="#.">Readmore</a></article>
+                    </div>
+
+                    <!-- Blog Post -->
+                    <div class="blog-post">
+                        <article><img class="img-responsive" src="images/blog-img-3.jpg" alt=""> <span><i class="fa fa-bookmark-o"></i> 25 Dec, 2017</span> <span><i class="fa fa-comment-o"></i> 86 Comments</span>
+                            <a href="#." class="tittle">It’s why there’s nothing else like Mac. </a>
+                            <p>Etiam porttitor ante non tellus pulvinar, non vehicula lorem fermentum. Nulla vitae efficitur mi [...] </p>
+                            <a href="#.">Readmore</a></article>
+                    </div>
+                    <div class="blog-post">
+                        <article><img class="img-responsive" src="images/blog-img-3.jpg" alt=""> <span><i class="fa fa-bookmark-o"></i> 25 Dec, 2017</span> <span><i class="fa fa-comment-o"></i> 86 Comments</span>
+                            <a href="#." class="tittle">It’s why there’s nothing else like Mac. </a>
+                            <p>Etiam porttitor ante non tellus pulvinar, non vehicula lorem fermentum. Nulla vitae efficitur mi [...] </p>
+                            <a href="#.">Readmore</a></article>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- End Content -->
+
+{% endblock %}

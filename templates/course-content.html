@@ -1,0 +1,299 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}{{ course.name }} - 课程 - {{ block.super }}{% endblock %}
+
+{% block css %}
+    <!-- https://videojs.com/getting-started/ -->
+    <link href="https://vjs.zencdn.net/7.1.0/video-js.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+    <!-- Linking -->
+    <div class="linking">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li><a href="#">主页</a></li>
+                <li><a href="{% url 'course:course_list' %}">课程列表</a></li>
+                <li><a href="{% url 'course:course_detail' course.id %}">{{ course.name }}</a></li>
+                {% if show_video %}
+                    <li><a href="{% url 'course:course_content' course.id %}">课程内容</a></li>
+                    <li class="active">正在播放：{{ video.name }}</li>
+                {% else %}
+                    <li class="active">内容</li>
+                {% endif %}
+            </ol>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div id="content">
+        <!-- Products -->
+        <section class="padding-bottom-60">
+            <div class="container">
+                <div class="row">
+                    <!-- Products -->
+                    <div class="col-md-9">
+
+                        <div class="product-detail">
+                            {% if show_video %}
+                                <!-- 如果是访问的视频播放页面，则显示视频框 -->
+                                <div class="product">
+
+                                    <video id="my-video" class="video-js vjs-fluid" controls preload="auto"
+                                           width="680" height="360"
+                                           poster="{% static 'platform/images/base-logo.png' %}"
+                                           data-setup="{}"
+                                           style="max-width: 90%; height: auto"
+                                    >
+                                        <source src="{{ video.url }}" type="video/mp4"></source>
+                                        <p class="vjs-no-js">
+                                            若要查看此视频，请启用JavaScript，并考虑升级到Web浏览器
+                                            <a href="https://videojs.com/html5-video-support/" target="_blank">支持HTML5视频资源</a>
+                                        </p>
+                                    </video>
+
+                                </div>
+                            {% else %}
+                                <!-- 否则显示课程介绍横幅 -->
+                                <div class="product light-gry-bg padding-left-10 padding-bottom-10 padding-top-10">
+                                    <!-- 课程基本信息 -->
+                                    <h4>{{ course.name }}</h4>
+                                    <ul class="row">
+                                        <!-- Step 1 -->
+                                        <li class="col-sm-3">
+                                            <div class="media-left"><i class="fa fa-angle-double-up"></i></div>
+                                            <div class="media-body"><span>课程难度</span>
+                                                <h6>{{ course.get_degree_display }}</h6>
+                                            </div>
+                                        </li>
+
+                                        <!-- Step 2 -->
+                                        <li class="col-sm-3 current">
+                                            <div class="media-left"><i class="fa fa-clock-o"></i></div>
+                                            <div class="media-body"><span>学习时长</span>
+                                                <h6>{{ course.learn_times }}分钟</h6>
+                                            </div>
+                                        </li>
+
+                                        <!-- Step 3 -->
+                                        <li class="col-sm-3">
+                                            <div class="media-left"><i class="fa fa-users"></i></div>
+                                            <div class="media-body"><span>学习人数</span>
+                                                <h6>{{ course.students }}</h6>
+                                            </div>
+                                        </li>
+
+                                        <!-- Step 4 -->
+                                        <li class="col-sm-3">
+                                            <div class="media-left"><i class="fa fa-minus-square-o"></i></div>
+                                            <div class="media-body"><span>课程分类</span>
+                                                <h6>{{ course.category }}</h6>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            {% endif %}
+
+                            <!-- Details Tab Section-->
+                            <div class="item-tabs-sec">
+
+                                <!-- Nav tabs -->
+                                <ul class="nav" role="tablist">
+                                    <li role="presentation" {% ifnotequal tab_choose 'comment' %} class="active" {% endifnotequal %}><a href="#course-lesson" role="tab" data-toggle="tab">章节</a></li>
+                                    <li role="presentation" {% ifequal tab_choose 'comment' %} class="active" {% endifequal %}><a href="#course_comment" role="tab" data-toggle="tab">评论</a></li>
+                                </ul>
+
+                                <!-- Tab panes -->
+                                <div class="tab-content">
+                                    <div role="tabpanel" class="tab-pane fade {% ifnotequal tab_choose 'comment' %} in active {% endifnotequal %}" id="course-lesson">
+                                        <!-- List Details -->
+                                        {% for lesson in all_lesson %}
+                                            <h6><b>{{ lesson.name }}</b></h6>
+                                            <ul class="bullet-round-list padding-left-20 padding-bottom-15">
+                                                {% for video in lesson.get_lesson_video %}
+                                                    <li style="color: #d0d0d0">
+                                                        <a href="
+
+                                                                {# video.url #}{% url 'course:video_content' course.id video.id %}">{{ forloop.parentloop.counter }}.{{ forloop.counter }} {{ video.name }}（{{ video.learn_times }}分钟）</a>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        {% endfor %}
+
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane fade {% ifequal tab_choose 'comment' %} in active {% endifequal %}" id="course_comment">
+                                        <div class="comments" style="margin-top: 2px;">
+                                            <h6>{% if comment_nums > 0 %}已经有{{ comment_nums }}条评论啦{% else %}暂无评论{% endif %}</h6><br>
+                                            <ul>
+                                                {% for comment in all_comment_page.object_list %}
+                                                    <!-- Comments -->
+                                                    <li class="media" style="margin-top: 1px;">
+                                                        <div class="media-left">
+                                                            <a href="#" class="avatar">
+                                                                <img src="{% if comment.user.image %}{{ comment.user.image.url }}{% else %}{% static 'platform/images/default-user.jpg' %}{% endif %}"
+                                                                     style="width: 60px; height: auto" alt="">
+                                                            </a>
+                                                        </div>
+                                                        <div class="media-body padding-left-20">
+                                                            <h6>{{ comment.user.nick_name }}({{ comment.user.username }}) <span><i class="fa fa-bookmark-o"></i> {{ comment.add_time }} </span></h6>
+                                                            <p>{{ comment.comments }}</p>
+                                                        </div>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+
+
+                                            <ul class="container pagination">
+                                                {% if all_comment_page.has_previous %}
+                                                    <li><a href="?{{ all_comment_page.previous_page_number.querystring }}" aria-label="Previous"> <i class="fa fa-angle-left"></i>
+                                                    </a></li>
+                                                {% endif %}
+
+                                                {% for page in all_comment_page.pages %}
+                                                    {% if page %}
+                                                        {% ifequal page all_comment_page.number %}
+                                                            <li><a class="active" href="?{{ page.querystring }}">{{ page }}</a></li>
+                                                        {% else %}
+                                                            <li><a href="?{{ page.querystring }}">{{ page }}</a></li>
+                                                        {% endifequal %}
+                                                    {% else %}
+                                                        <li><a href="">...</a></li>
+                                                    {% endif %}
+                                                {% endfor %}
+
+                                                {% if all_comment_page.has_next %}
+                                                    <li><a href="?{{ all_comment_page.next_page_number.querystring }}" aria-label="Next"> <i class="fa fa-angle-right"></i> </a></li>
+                                                {% endif %}
+                                            </ul>
+
+                                        </div>
+
+                                        <div class="add-comments padding-top-2">
+                                            <h6>评论一下吧~</h6>
+
+                                            <!-- FORM -->
+                                            <form>
+                                                <ul class="row">
+                                                    <li class="col-sm-12">
+                                                        <label>
+                                                            <textarea id="js_comment_value" name="comments" class="form-control" rows="3" placeholder="请输入评论"
+                                                                      style="height: auto; max-width: 100%;"></textarea>
+                                                        </label>
+                                                    </li>
+                                                    <li class="col-sm-12 text-left">
+                                                        <button type="button" class="btn-round" id="js_comment_button">发表评论</button>
+                                                    </li>
+                                                </ul>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-3">
+                        <div class="recent-post padding-top-20">
+                            <h5>课程资源下载</h5>
+                            <hr>
+                            <!-- 相关课程资源 -->
+                            {% for resource in all_resource %}
+                                <p>
+                                    <i class="fa fa-file-o"></i> {{ resource.name }}
+                                    <span style="float: right">
+                                        <a href="{{ resource.download.url }}" title="下载{{ resource.download }}"><i class="fa fa-download"></i></a>
+                                    </span>
+                                </p>
+                            {% endfor %}
+                        </div>
+
+                        {% if course.teacher %}
+                            <div class="recent-post padding-top-20">
+                                <h5>讲师提示</h5>
+                                <hr>
+                                <div class="media">
+                                    <div class="media-left">
+                                        <a href="{% url 'teacher:teacher_detail' course.teacher.id %}" class="cart-btn">
+                                            <img class="img-responsive"
+                                                 src="{% if course.teacher.image %}{{ course.teacher.image.url }}{% else %}{% static 'platform/images/default-user.jpg' %}{% endif %}" alt="">
+                                        </a>
+                                    </div>
+                                    <div class="media-body" style="vertical-align: middle;">
+                                        <p><a href="{% url 'teacher:teacher_detail' course.teacher.id %}">{{ course.teacher.name }}</a></p>
+                                        <p>{{ course.teacher.work_position }}({{ course.teacher.work_company }})</p>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        <div class="recent-post padding-top-10 padding-bottom-10 padding-left-10 padding-right-10 light-gry-bg">
+                            <h6><b>课程须知</b></h6>
+                            <p>{{ course.notes }}</p>
+                            <hr>
+                            <h6><b>老师告诉你能学到什么</b></h6>
+                            <p>{{ course.tell_you }}</p>
+                        </div>
+
+                        <div class="recent-post padding-top-20">
+                            <h5>学习该课程的人还学习过</h5>
+                            <hr>
+                            {% for course in related_course %}
+                                {% if forloop.first %}
+                                    <img class="img-responsive" title="{{ course.name }}"
+                                         src="{% if course.image %}{{ course.image.url }}{% else %}{% static 'platform/images/default-course.png' %}{% endif %}" alt="">
+                                {% endif %}
+                                <p>
+                                    <b>{{ forloop.counter }}. </b><a href="{% url 'course:course_detail' course.id %}">{{ course.name }} (学习人数：{{ course.students }}人)</a>
+                                </p>
+                            {% empty %}
+                                暂无
+                            {% endfor %}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+{% endblock %}
+
+
+{% block js %}
+    <script type="text/javascript">
+        $('#js_comment_button').on('click', function () {
+            let comments = $('#js_comment_value').val();
+            if (comments === '') {
+                alert('评论不能为空');
+                return
+            }
+            $.ajax({
+                cache: false,
+                type: 'POST',
+                url: "{% url 'courses:add_comment' %}",
+                data: {'course_id': {{ course.id }}, 'comments': comments},
+                async: true,
+                beforeSend: function (xhr, settings) {
+                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                },
+                success: function (data) {
+                    if (data.comment_status === 'fail') {
+                        if (data.comment_msg === '用户未登录') {
+                            window.location.href = "{% url 'login' %}?next={{ request.path }}";
+                        } else {
+                            alert(data.comment_msg);
+                        }
+                    } else if (data.comment_status === 'success') {
+                        window.location.reload();  //刷新当前页面
+                    }
+                },
+            });
+        });
+    </script>
+
+    <!-- 引入视频播放js -->
+    <script src="https://vjs.zencdn.net/7.1.0/video.js"></script>
+{% endblock %}

@@ -1,0 +1,239 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}{{ teacher.name }} - 讲师 - {{ block.super }}{% endblock %}
+
+{% block content %}
+
+    <!-- Linking -->
+    <div class="linking">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li><a href="#">主页</a></li>
+                <li><a href="{% url 'teacher:teacher_list' %}">授课教师</a></li>
+                <li class="active">{{ teacher.name }}</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div id="content">
+        <!-- Products -->
+        <section class="padding-bottom-60">
+            <div class="container">
+                <div class="row">
+                    <!-- Products -->
+                    <div class="col-md-9">
+
+                        <div class="product-detail">
+                            <div class="product">
+                                <div class="row">
+                                    <!-- Slider Thumb -->
+                                    <div class="col-xs-5">
+                                        <article class="slider-item on-nav">
+                                            <div class="thumb-slider">
+
+                                                <div class="flex-viewport" style="overflow: hidden; position: relative;">
+                                                    <ul class="slides" style="width: 1000%; transition-duration: 0s; transform: translate3d(-1122px, 0px, 0px);">
+                                                        <li data-thumb="" class="clone" aria-hidden="true" style="width: 374px; float: left; display: block;">
+                                                            <img style="vertical-align:middle; height: 280px; width: auto"
+                                                                 src="{{ teacher.image.url }}" alt=""
+                                                                 draggable="false">
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </article>
+                                    </div>
+                                    <!-- Item Content -->
+                                    <div class="col-xs-7"><span class="tags">机构：{{ teacher.org.name }}</span>
+                                        <h5>{{ teacher.name }}</h5>
+                                        <div class="row">
+                                            <div class="col-sm-6">资历：<span class="price">{{ teacher.work_years }}</span>&nbsp;年</div>
+                                            <div class="col-sm-6">
+                                                <p>课程数：<span class="in-stock">{{ teacher.courses.count }} 个</span></p>
+                                            </div>
+                                        </div>
+                                        <!-- List Details -->
+                                        <ul class="bullet-round-list">
+                                            <li>就职公司：{{ teacher.work_company }}</li>
+                                            <li>公司职位：{{ teacher.work_position }}</li>
+                                            <li>点&nbsp;&nbsp;击&nbsp;&nbsp;数：{{ teacher.click_nums }}</li>
+                                            <li>收&nbsp;&nbsp;藏&nbsp;&nbsp;数：{{ teacher.fav_nums }}</li>
+                                            <li>教学热点：{{ teacher.points }}</li>
+                                        </ul>
+
+                                        <!-- Compare Wishlist -->
+                                        <ul class="cmp-list">
+                                            {# 收藏与取消收藏课程#}
+                                            <i class="fa fa-heart" style="color: #FF8040"></i>
+                                            {% if has_fav_teacher %}
+                                                <a href="javascript:void(0)" id="add_fav_teacher_button" style="color: #FFA042"> 取消收藏</a>
+                                            {% else %}
+                                                <a href="javascript:void(0)" id="add_fav_teacher_button" style="color: #02DF82"> 添加收藏</a>
+                                            {% endif %}
+                                        </ul>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Details Tab Section-->
+                        </div>
+
+                        <section class="padding-top-10 padding-bottom-10">
+                            <div class="container" style="width: auto;">
+                                <!-- heading -->
+                                <div class="heading">
+                                    <h2>讲师课程</h2>
+                                    <hr>
+                                </div>
+
+                                <!-- heading -->
+                                <div class="item-col-4">
+
+                                    {% for course in teacher.courses.all %}
+                                        <!-- Product -->
+                                        <a href="{% url 'course:course_detail' course.id %}">
+                                            <div class="product">
+                                                <article>
+                                                    <img class="img-responsive" style="height: 160px; width: auto;"
+                                                         src="{% if course.image %}{{ course.image.url }}{% else %}{% static 'platform/images/default-course.png' %}{% endif %}" alt="">
+                                                    {% if course.add_time|date:"Y-m-d" == time_now|date:"Y-m-d" %}<span class="new-tag">今天</span>{% endif %}
+
+                                                    <!-- Content -->
+                                                    <span class="tag">{{ course.course_org.name }}</span>
+                                                    <div class="tittle" style="min-height: 2px;">{{ course.name }}</div>
+                                                    <!-- Reviews -->
+                                                    <p class="rev">
+                                                        <i class="fa fa-group" title="学习人数"></i> {{ course.students }}
+                                                        <span class="margin-left-36"><i class="fa fa-star" title="收藏人数"></i> {{ course.fav_nums }}</span>
+                                                        <span class="margin-left-36"><i class="fa fa-mouse-pointer" title="点击数"></i> {{ course.click_nums }}</span>
+                                                    </p>
+                                                    <div class="price">课时： {{ course.learn_times }}分钟</div>
+                                                </article>
+                                            </div>
+                                        </a>
+                                    {% empty %}
+                                        暂无
+                                    {% endfor %}
+
+
+                                </div>
+                            </div>
+                        </section>
+
+                    </div>
+                    <div class="col-md-3">
+
+                        <div class="contact-info">
+                            <a href="{% url 'org:org_home' teacher.org.id %}">
+                                <div class="item-img"><img class="img-responsive"
+                                                           src="{% if teacher.org.image %}{{ teacher.org.image.url }}{% else %}{% static 'platform/images/default-org.png' %}{% endif %}"
+                                                           alt=""></div>
+                                <h4>{{ teacher.org.name }}</h4>
+                                <small>{{ teacher.org.desc }}</small>
+                            </a>
+                            <hr>
+                            <p>
+                                {# 机构收藏与取消机构收藏 #}
+                                {% if has_fav_org %}
+                                    <button id="add_fav_org_button" class="btn-round btn-light" style="background: #FFA042">取消收藏</button>
+                                {% else %}
+                                    <button id="add_fav_org_button" class="btn-round btn-light" style="background: #02DF82">添加收藏</button>
+                                {% endif %}
+                            </p>
+                            <h6>机构信息</h6>
+                            <p>课 &nbsp; 程 &nbsp; 数：{{ teacher.org.courses.count }}</p>
+                            <p>讲 &nbsp; 师 &nbsp; 数：{{ teacher.org.teachers.count }}</p>
+                            <p>所在地区：{{ teacher.org.address }}</p>
+                        </div>
+
+                        <div class="recent-post padding-top-20">
+                            <h5>讲师排行榜</h5>
+                            <hr>
+                            {% for teacher in rank_teacher %}
+                                <!-- Recent Posts -->
+                                <div class="media">
+                                    <div class="media-left">
+                                        <a href="{% url 'teacher:teacher_detail' teacher.id %}" class="cart-btn">
+                                            <img class="img-responsive" src="{{ teacher.image.url }}" alt="">
+                                        </a>
+                                    </div>
+                                    <div class="media-body">
+                                        <p>{{ forloop.counter }}</p>
+                                        <a href="{% url 'teacher:teacher_detail' teacher.id %}">
+                                            {{ teacher.name }}
+                                        </a> <span>资历：{{ teacher.work_years }}年</span>
+
+                                    </div>
+                                </div>
+                                <hr>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+{% endblock %}
+
+
+{% block js %}
+    <script type="text/javascript">
+
+        //添加或取消收藏
+        function add_fav(current_elem, fav_id, fav_type) {
+            $.ajax({
+                cache: false,
+                type: "POST",
+                url: "{% url 'org:add_fav' %}",
+                data: {'fav_id': fav_id, 'fav_type': fav_type},
+                async: true,
+                beforeSend: function (xhr, settings) {
+                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                },
+                success: function (data) {
+                    if (data.fav_status === 'fail') {
+                        if (data.fav_msg === '用户未登录') {
+                            window.location.href = "/login/?next={{ request.path }}";
+                        } else {
+                            alert(data.fav_msg)
+                        }
+
+                    } else if (data.fav_status === 'success') {
+                        current_elem.text(data.fav_msg);
+                        // 修改按钮的颜色
+                        if (data.fav_msg === '取消收藏') {
+                            if (fav_type === 2) {
+                                document.getElementById('add_fav_org_button').style.background = '#FFA042';
+                            } else if (fav_type === 1) {
+                                document.getElementById('add_fav_course_button').style.color = '#FFA042';
+                            }
+                        } else if (data.fav_msg === '添加收藏') {
+                            if (fav_type === 2) {
+                                document.getElementById('add_fav_org_button').style.background = '#02DF82';
+                            } else if (fav_type === 1) {
+                                document.getElementById('add_fav_course_button').style.color = '#02DF82';
+                            }
+                        }
+                    }
+                },
+            });
+        }
+
+        // 收藏机构点击
+        $('#add_fav_org_button').on('click', function () {
+            add_fav($(this), {{ teacher.org.id }}, 2);
+        });
+
+        // 收藏课程点击
+        $('#add_fav_teacher_button').on('click', function () {
+            add_fav($(this), {{ teacher.id }}, 3);
+        });
+
+    </script>
+{% endblock %}

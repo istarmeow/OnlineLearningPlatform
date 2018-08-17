@@ -1,0 +1,326 @@
+<!doctype html>
+{% load static %}
+<html class="no-js" lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="author" content="M_Adnan"/>
+    <!-- Document Title -->
+    <title>{% block title %}在线学习平台{% endblock %}</title>
+
+    <!-- Favicon -->
+{#    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">#}
+{#    <link rel="icon" href="images/favicon.ico" type="image/x-icon">#}
+
+    <!-- SLIDER REVOLUTION 4.x CSS SETTINGS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'platform/rs-plugin/css/settings.css' %}" media="screen"/>
+
+    <!-- StyleSheets -->
+    <link rel="stylesheet" href="{% static 'platform/css/ionicons.min.css' %}">
+    <link rel="stylesheet" href="{% static 'platform/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'platform/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'platform/css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'platform/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'platform/css/responsive.css' %}">
+
+    <!-- Fonts Online -->
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
+
+
+    <!-- JavaScripts -->
+    <script src="{% static 'platform/js/vendors/modernizr.js' %}"></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    {% block css %}{% endblock %}
+
+</head>
+<body>
+
+<!-- Page Wrapper -->
+<div id="wrap" class="layout-1">
+
+    <!-- Top bar -->
+    <div class="top-bar">
+        <div class="container">
+            <p>欢迎使用在线学习平台!</p>
+            <div class="right-sec">
+                <ul>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'users:user_info' %}"><b>{{ user.nick_name }}（{{ user.username }}）</b> </a></li>
+                    <li>
+                        <select class="selectpicker" id="usercenter_choose">
+                            <option value="">用户功能</option>
+                            <option value="user_center" {% if '/info/' in request.path %} selected {% endif %}>个人中心</option>
+                            <option value="my_course" {% if '/my_course/' in request.path %} selected {% endif %}>我的课程</option>
+                            <option value="my_fav" {% if '/my_favorite/' in request.path %} selected {% endif %}>我的收藏</option>
+                            <option>我的消息</option>
+                        </select>
+                    </li>
+                    <li><a href="#">退出 </a></li>
+                    {% else %}
+                    <li><a href="{% url 'login' %}">登录 </a></li>
+                    <li><a href="{% url 'register' %}">注册 </a></li>
+                    {% endif %}
+                </ul>
+                <div class="social-top"><a href="#."><i class="fa fa-pinterest"></i></a></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="logo"><a href="index.html"><img src="{% static 'platform/images/base-logo.png' %}" height="50" width="120" alt=""></a></div>
+            <div class="search-cate">
+                <select class="selectpicker" id="search_type">
+                    <option value="course"> 公开课</option>
+                    <option value="org"> 课程机构</option>
+                    <option value="teacher"> 授课教师</option>
+                </select>
+                <input type="search" id="search_keywords" placeholder="选择搜索...">
+                <button class="submit" type="button" onclick="search_click()"><i class="icon-magnifier"></i></button>
+            </div>
+
+            <!-- Cart Part -->
+            <ul class="nav navbar-right cart-pop">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="itm-cont">3</span> <i
+                        class="flaticon-shopping-bag"></i>
+                    <strong>我的收藏</strong> <br>
+                    <span>共有xxx个收藏</span></a>
+                    <ul class="dropdown-menu">
+                        <li>
+{#                            <div class="media-left"><a href="#." class="thumb"> <img src="images/item-img-1-1.jpg" class="img-responsive" alt=""> </a></div>#}
+                            <div class="media-body"><a href="#." class="tittle">Funda Para Ebook 7" 128GB full HD</a> <span>250 x 1</span></div>
+                        </li>
+                        <li>
+{#                            <div class="media-left"><a href="#." class="thumb"> <img src="images/item-img-1-2.jpg" class="img-responsive" alt=""> </a></div>#}
+                            <div class="media-body"><a href="#." class="tittle">Funda Para Ebook 7" full HD</a> <span>250 x 1</span></div>
+                        </li>
+                        <li class="btn-cart"><a href="#." class="btn-round">View Cart</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Nav -->
+        <nav class="navbar ownmenu">
+            <div class="container">
+
+                <!-- Categories -->
+                <div class="cate-lst"><a data-toggle="collapse" class="cate-style" href="#cater"><i class="fa fa-list-ul"></i> 网站导航 </a>
+                    <div class="cate-bar-in">
+                        <div id="cater" class="collapse">
+                            <ul>
+                                <li><a href="#."> Home Audio & Theater</a></li>
+                                <li><a href="#."> TV & Video</a></li>
+                                <li><a href="#."> Camera, Photo & Video</a></li>
+                                <li class="sub-menu"><a href="#."> Cell Phones & Accessories</a>
+                                    <ul>
+                                        <li><a href="#."> TV & Video</a></li>
+                                        <li><a href="#."> Camera, Photo & Video</a></li>
+                                        <li><a href="#."> Cell Phones & Accessories</a>
+                                    </ul>
+                                </li>
+                                <li><a href="#."> Headphones</a></li>
+                                <li><a href="#."> Video Games</a></li>
+                                <li class="sub-menu"><a href="#."> Bluetooth & Wireless Speakers</a>
+                                    <ul>
+                                        <li><a href="#."> TV & Video</a></li>
+                                        <li><a href="#."> Camera, Photo & Video</a></li>
+                                        <li><a href="#."> Cell Phones & Accessories</a>
+                                    </ul>
+                                </li>
+                                <li class="sub-menu"><a href="#."> Gaming Console</a>
+                                    <ul>
+                                        <li><a href="#."> TV & Video</a></li>
+                                        <li><a href="#."> Camera, Photo & Video</a></li>
+                                        <li><a href="#."> Cell Phones & Accessories</a>
+                                    </ul>
+                                </li>
+                                <li><a href="#."> Computers & Tablets</a></li>
+                                <li><a href="#."> Monitors</a></li>
+                                <li><a href="#."> Home Appliances</a></li>
+                                <li><a href="#."> Office Supplies</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navbar Header -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav-open-btn" aria-expanded="false"><span><i class="fa fa-navicon"></i></span></button>
+                </div>
+                <!-- NAV -->
+                <div class="collapse navbar-collapse" id="nav-open-btn">
+                    <ul class="nav">
+                        <li {% ifequal request.path '/' %} class="active" {% endifequal %}><a href="{% url 'index' %}">首页 </a></li>
+                        <!--
+                        <li {% ifequal current_access_url 'course' %} class="active" {% endifequal %}><a href="{% url 'course:course_list' %}">公开课 </a></li>
+                        <li {% ifequal current_access_url 'teacher' %} class="active" {% endifequal %}><a href="{% url 'teacher:teacher_list' %}">授课教师 </a></li>
+                        <li {% ifequal current_access_url 'org' %} class="active" {% endifequal %}><a href="{% url 'org:org_list' %}">授课机构</a></li>
+                        -->
+                        <li {% ifequal request.path|slice:'7' '/course' %} class="active" {% endifequal %}><a href="{% url 'course:course_list' %}">公开课 </a></li>
+                        <li {% ifequal request.path|slice:'8' '/teacher' %} class="active" {% endifequal %}><a href="{% url 'teacher:teacher_list' %}">授课教师 </a></li>
+                        <li {% ifequal request.path|slice:'4' '/org' %} class="active" {% endifequal %}><a href="{% url 'org:org_list' %}">授课机构</a></li>
+                    </ul>
+                </div>
+
+                <!-- NAV RIGHT -->
+                <div class="nav-right"><span class="call-mun"><i class="fa fa-phone"></i> <strong>联系电话：</strong> (+86) 123 456 78900</span></div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Content -->
+    <div id="content">
+        {% block content %}
+        {% endblock %}
+
+
+        <!-- Newslatter -->
+        <section class="newslatter">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3>愿你在这儿成长 <span>↑ <strong>加油努力</strong> ！</span></h3>
+                    </div>
+                    <div class="col-md-6">
+                        <form>
+                            <input type="text" placeholder="意见反馈...">
+                            <button type="button">提交!</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+
+                <!-- Contact -->
+                <div class="col-md-4">
+                    <h4>联系我们!</h4>
+                    <p>地址：中国·四川·成都</p>
+                    <p>电话: (+86) 123 456 78900</p>
+                    <p>邮箱: admin@admin.com</p>
+                    <div class="social-links"><a href="#."><i class="fa fa-pinterest"></i></a></div>
+                </div>
+
+                <!-- Categories -->
+                <div class="col-md-3">
+                    <h4>课程分类</h4>
+                    <ul class="links-footer">
+                        <li><a href="#.">Python</a></li>
+                        <li><a href="#."> HTML</a></li>
+                        <li><a href="#.">Django</a></li>
+                    </ul>
+                </div>
+
+                <!-- Categories -->
+                <div class="col-md-3">
+                    <h4>网站服务</h4>
+                    <ul class="links-footer">
+                        <li><a href="#.">一对一指导</a></li>
+                        <li><a href="#."> 部分收费</a></li>
+                    </ul>
+                </div>
+
+                <!-- Categories -->
+                <div class="col-md-2">
+                    <h4>其他信息</h4>
+                    <ul class="links-footer">
+                        <li><a href="#.">网站介绍</a></li>
+                        <li><a href="#."> 在线答疑</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Rights -->
+    <div class="rights">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                    <p>Copyright © 2018 <a href="#." class="ri-li"> XXX </a>. All rights reserved</p>
+                </div>
+                <div class="col-sm-6 text-right"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- End Footer -->
+
+    <!-- GO TO TOP  -->
+    <a href="#" class="cd-top"><i class="fa fa-angle-up"></i></a>
+    <!-- GO TO TOP End -->
+</div>
+<!-- End Page Wrapper -->
+
+<!-- JavaScripts -->
+<script src="{% static 'platform/js/vendors/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'platform/js/vendors/wow.min.js' %}"></script>
+<script src="{% static 'platform/js/vendors/bootstrap.min.js' %}"></script>
+<script src="{% static 'platform/js/vendors/own-menu.js' %}"></script>
+<script src="{% static 'platform/js/vendors/jquery.sticky.js' %}"></script>
+<script src="{% static 'platform/js/vendors/owl.carousel.min.js' %}"></script>
+
+<!-- SLIDER REVOLUTION 4.x SCRIPTS  -->
+<script type="text/javascript" src="{% static 'platform/rs-plugin/js/jquery.tp.t.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'platform/rs-plugin/js/jquery.tp.min.js' %}"></script>
+<script src="{% static 'platform/js/main.js' %}"></script>
+
+<script type="text/javascript">
+    // 顶部搜索栏
+    function search_click() {
+        let search_type = $('#search_type option:selected'), search_keywords = $('#search_keywords').val();
+        if (search_keywords.replace(/(^\s*)|(\s*$)/g, "") === '') {  // 搜索字符串取出两端空格
+            return;
+        }
+        //alert(search_type.text());  //可以获取选择项的文本
+        search_type = search_type.val();
+        let redirect_url = '';
+        if (search_type === 'course') {
+            redirect_url = "{% url 'course:course_list' %}?keywords=" + search_keywords;
+        } else if (search_type === 'org'){
+            redirect_url = "{% url 'org:org_list' %}?keywords=" + search_keywords;
+        } else if (search_type === 'teacher') {
+            redirect_url = "{% url 'teacher:teacher_list' %}?keywords=" + search_keywords;
+        }
+        window.location.href = redirect_url;
+    }
+
+
+    // 顶部个人中心选择功能
+    $('#usercenter_choose').change(function () {
+        let choose = $(this).children('option:selected').val();
+        // alert(choose);
+        if (choose === '') {
+            return;
+        }
+        let redirect_url = '';
+        if (choose === 'user_center') {
+            redirect_url = "{% url 'usercenter:user_info' %}"
+        } else if (choose === 'my_course') {
+            redirect_url = "{% url 'usercenter:my_course' %}"
+        } else if (choose === 'my_fav') {
+            redirect_url = "{% url 'usercenter:my_favorite' %}"
+        }
+        window.location.href = redirect_url;
+    })
+
+</script>
+
+{% block js %}
+{% endblock %}
+
+</body>
+</html>

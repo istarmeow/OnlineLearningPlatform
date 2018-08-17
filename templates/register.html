@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% load static %}
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    <title> - 注册</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/font-awesome.css' %}" rel="stylesheet">
+    <link href="{% static 'css/animate.css' %}" rel="stylesheet">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <link href="{% static 'css/login.css' %}" rel="stylesheet">
+
+    <link href="{% static 'css/mycss.css' %}" rel="stylesheet">
+
+</head>
+
+<body class="signin">
+    <div class="signinpanel">
+        <div class="row">
+            <div class="col-sm-12">		
+
+				<div class="text-center">
+					<h1 class="logo-name">^-^</h1>
+				</div>
+				
+				<h3>欢迎注册 在线学习平台</h3>
+				<p>创建一个新账户</p>
+				<form method="post" action="/register/" autocomplete="off">
+                    <input name="email" value="{% if register_form.email.value %}{{ register_form.email.value }}{% endif %}" type="email" class="form-control" placeholder="请输入邮箱" required="">
+                    {% if register_form.errors.email %}
+                        <span class="help-block m-b-none"> {{ register_form.errors.email.as_text }}</span>
+                    {% endif %}
+
+                    <input name="password" value="{% if register_form.password.value %}{{ register_form.password.value }}{% endif %}" type="password" class="form-control" placeholder="请输入密码" required="">
+                    {% if register_form.errors.password %}
+                        <span class="help-block m-b-none"> {{ register_form.errors.password.as_text }}</span>
+                    {% endif %}
+
+                    <div class="input-group">
+                        <input type="text" name="captcha_1" required="" id="id_captcha_1" class="form-control" autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false" style="width: 75%" placeholder="验证码">
+                        <img  style="width: 25%; float: left; margin-top: 15px;height: 30px" src="{{ image_url }}" alt="captcha" class="captcha">
+                        <input type="hidden" name="captcha_0" value="{{ hashkey }}" required="" id="id_captcha_0">
+                    </div>
+
+                    {# register_form.captcha #} <!-- 可以使用register_form表单自动生成表单框和验证码图片 -->
+                    {#【{{ image_url }}、{{ hashkey }}】#}
+
+                    {% if register_form.errors.captcha %}
+                        <span class="help-block m-b-none"> {{ register_form.errors.captcha.as_text }}</span>
+                    {% endif %}
+
+                    {% csrf_token %}
+
+                    {% if msg %}
+                        <br>
+                        <div class="alert alert-danger" style="padding: 5px;">
+                            {{ msg }}
+                        </div>
+                    {% endif %}
+
+					<button type="submit" class="btn btn-primary block full-width m-b">注 册</button>
+
+					<p class="text-muted text-center"><small>已经有账户了？</small><a href="/login/">点此登录</a>
+					</p>
+				</form>				
+				
+            </div>
+        </div>
+        <div class="signup-footer">
+            <div class="pull-left">
+                &copy; 在线学习平台
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+
+    <script>
+        $('.captcha').click(function () {
+        $.getJSON("/captcha/refresh/", function (result) {
+            $('.captcha').attr('src', result['image_url']);
+            $('#id_captcha_0').val(result['key'])
+        });
+    });
+    </script>
+
+</body>
+
+</html>

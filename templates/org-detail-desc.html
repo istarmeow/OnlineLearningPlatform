@@ -1,0 +1,27 @@
+{% extends 'org-detail-homepage.html' %}
+
+{% load static %}
+
+{% block title %}机构介绍 - {{ block.super }}{% endblock %}
+
+{% block breadcrumb_org %}
+    <li><a href="{% url 'org:org_home' org_id %}">{{ course_org.name }}</a></li>
+    <li class="active">机构介绍</li>
+{% endblock breadcrumb_org %}
+
+
+{% block org_home_content %}
+<section class="padding-top-10 padding-bottom-60">
+    <div class="container" style="width: auto;">
+        <!-- heading -->
+        <div class="heading">
+            <h2>机构介绍</h2>
+            <hr>
+        </div>
+
+        <div class="item-col-12">
+            {{ course_org.desc }}
+        </div>
+    </div>
+</section>
+{% endblock %}

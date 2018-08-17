@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}课程列表 - {{ block.super }}{% endblock %}
+
+{% block content %}
+
+    <!-- Linking -->
+    <div class="linking">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li><a href="#">主页</a></li>
+                <li class="active">课程列表</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div id="content">
+        <!-- Products -->
+        <section class="padding-bottom-60">
+            <div class="container">
+                <div class="row">
+                    <!-- Products -->
+                    <div class="col-md-9">
+                        <div class="short-lst">
+                            <ul>
+                                <li><b>难度等级</b></li>
+                                <li><a href="?sort={{ sort }}&degree=" {% ifequal degree_code '' %} style="color: #BEBEBE" {% endifequal %}> 全部 </a></li>
+                                {% for degree in all_degree %}
+                                    <li><a href="?sort={{ sort }}&degree={{ degree.code }}" {% ifequal degree_code degree.code %}
+                                           style="color: #BEBEBE" {% endifequal %}> {{ degree.explain }} </a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                        <!-- Short List -->
+                        <div class="short-lst">
+                            <h2>课程列表
+                                <small>（共{{ course_nums }}条）</small>
+                            </h2>
+                            <ul>
+                                <!-- Short List -->
+                                <li>
+                                    <p><a href="?sort=&degree={{ degree_code }}" {% ifequal sort '' %} style="font-weight: bold" {% endifequal %}> 最新 </a></p>
+                                </li>
+                                <li>
+                                    <p><a href="?sort=students&degree={{ degree_code }}" {% ifequal sort 'students' %} style="color: #BEBEBE" {% endifequal %}> 学习人数 ↓</a></p>
+                                </li>
+                                <li>
+                                    <p><a href="?sort=fav&degree={{ degree_code }}" {% ifequal sort 'fav' %} style="color: #BEBEBE" {% endifequal %}> 收藏人数 ↓</a></p>
+                                </li>
+                                <li>
+                                    <p><a href="?sort=click&degree={{ degree_code }}" {% ifequal sort 'click' %} style="color: #BEBEBE" {% endifequal %}>点击数 ↓</a></p>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Items -->
+                        <div class="item-col-4">
+                            {# for course in all_course #}
+                            {% for course in all_course_page.object_list %}
+                                <!-- Product -->
+                                <a href="{% url 'course:course_detail' course.id %}">
+                                    <div class="product">
+                                        <article>
+                                            <img class="img-responsive" style="height: 160px; width: 100%;"
+                                                 src="{% if course.image %}{{ course.image.url }}{% else %}{% static 'platform/images/default-course.png' %}{% endif %}" alt="">
+                                            {% if course.add_time|date:"Y-m-d" == time_now|date:"Y-m-d" %}<span class="new-tag">今天</span>{% endif %}
+
+                                            <!-- Content -->
+                                            <span class="tag">{{ course.course_org.name }}</span>
+                                            <div class="tittle" style="min-height: 2px;">{{ course.name }}</div>
+                                            <!-- Reviews -->
+                                            <p class="rev">
+                                                <i class="fa fa-group" title="学习人数"></i> {{ course.students }}
+                                                <span class="margin-left-36"><i class="fa fa-star" title="收藏人数"></i> {{ course.fav_nums }}</span>
+                                                <span class="margin-left-36"><i class="fa fa-mouse-pointer" title="点击数"></i> {{ course.click_nums }}</span>
+                                            </p>
+                                            <div class="price">课时： {{ course.learn_times }}分钟</div>
+                                        </article>
+                                    </div>
+                                </a>
+                            {% endfor %}
+
+                            <ul class="container pagination padding-left-20">
+                                {% if all_course_page.has_previous %}
+                                    <li><a href="?{{ all_course_page.previous_page_number.querystring }}" aria-label="Previous"> <i class="fa fa-angle-left"></i> </a></li>
+                                {% endif %}
+
+                                {% for page in all_course_page.pages %}
+                                    {% if page %}
+                                        {% ifequal page all_course_page.number %}
+                                            <li><a class="active" href="?{{ page.querystring }}">{{ page }}</a></li>
+                                        {% else %}
+                                            <li><a href="?{{ page.querystring }}">{{ page }}</a></li>
+                                        {% endifequal %}
+                                    {% else %}
+                                        <li><a href="">...</a></li>
+                                    {% endif %}
+                                {% endfor %}
+
+                                {% if all_course_page.has_next %}
+                                    <li><a href="?{{ all_course_page.next_page_number.querystring }}" aria-label="Next"> <i class="fa fa-angle-right"></i> </a></li>
+                                {% endif %}
+                            </ul>
+
+                        </div>
+
+
+                    </div>
+
+                    <!-- Shop Side Bar -->
+                    <div class="col-md-3">
+
+                        <div class="recent-post padding-top-20">
+                            <h5>热门课程推荐</h5>
+                            <hr>
+                            {% for course in hot_course %}
+                                <!-- Recent Posts -->
+                                <div class="media">
+                                    <div class="media-left">
+                                        <a href="{% url 'course:course_detail' course.id %}" class="cart-btn">
+                                            <img class="img-responsive" src=" {% if course.image %}{{ course.image.url }}{% else %}{% static 'platform/images/default-course.png' %}{% endif %}"  alt="">
+                                        </a>
+                                    </div>
+                                    <div class="media-body">
+                                        <p>{{ forloop.counter }}</p>
+                                        <a href="{% url 'course:course_detail' course.id %}">
+                                            {{ course.name }}
+                                        </a>
+{#                                        <span>{{ course.degree }}</span>#}
+                                        <span>{{ course.get_degree_display }}</span>
+
+                                    </div>
+                                </div>
+                                <hr>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock %}
+
+{% block js %}
+
+
+{% endblock %}

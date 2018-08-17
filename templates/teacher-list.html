@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}授课教师列表 - {{ block.super }}{% endblock %}
+
+{% block content %}
+
+    <!-- Linking -->
+    <div class="linking">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li><a href="#">主页</a></li>
+                <li class="active">授课教师</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div id="content">
+        <!-- Products -->
+        <section class="padding-bottom-60">
+            <div class="container">
+                <div class="row">
+                    <!-- Products -->
+                    <div class="col-md-9">
+
+                        <!-- Short List -->
+                        <div class="short-lst">
+                            <h2>授课教师
+                                <small>（共{{ teacher_nums }}名，本页显示{{ all_teacher_page.object_list.count }}名）</small>
+                            </h2>
+                            <ul>
+                                <!-- Short List -->
+                                <li>
+                                    <p><a href="{% url 'teacher:teacher_list' %}" {% ifequal sort '' %} style="font-weight: bold" {% endifequal %}> 点击数(默认) </a></p>
+                                </li>
+                                <li>
+                                    <p><a href="{% url 'teacher:teacher_list' %}?sort=fav" {% ifequal sort 'fav' %} style="color: #BEBEBE" {% endifequal %}> 收藏人气 ↓</a></p>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Items -->
+                        <div class="col-list">
+                            {% for teacher in all_teacher_page.object_list %}
+                                <!-- Product -->
+                                <div class="product">
+                                    <article>
+                                        <!-- Product img -->
+                                        <div class="media-left" style="vertical-align: middle;">
+                                            <div class="item-img">
+                                                <img class="img-responsive" src="{% if teacher.image %}{{ teacher.image.url }}{% else %}{% static 'platform/images/default-user.jpg' %}{% endif %}"
+                                                     alt="">
+                                            </div>
+                                        </div>
+                                        <!-- Content -->
+                                        <div class="media-body">
+                                            <div class="row">
+                                                <!-- Content Left -->
+                                                <div class="col-sm-7">
+                                                    <span class="tag">{{ teacher.org.name }}</span>
+                                                    <h4><a href="{% url 'teacher:teacher_detail' teacher.id %}">{{ teacher.name }}</a></h4>
+                                                    <!-- Reviews -->
+
+                                                    <ul class="bullet-round-list">
+                                                        <li>就职公司：{{ teacher.work_company }}</li>
+                                                        <li>工作年限：{{ teacher.work_years }}</li>
+                                                        <li>公司职位：{{ teacher.work_position }}</li>
+                                                        <li>点击数：{{ teacher.click_nums }}</li>
+                                                        <li>收藏数：{{ teacher.fav_nums }}</li>
+                                                        <li>教学热点：{{ teacher.points }}</li>
+                                                    </ul>
+                                                </div>
+                                                <!-- Content Right -->
+                                                <div class="col-sm-5">
+                                                    <p>经典课程一：<span class="in-stock">xxx</span></p>
+                                                    <p>经典课程二：<span class="in-stock">xxx</span></p>
+                                                    <div class="text-center">
+                                                        <div class="position-center-center">
+                                                            <a href="{% url 'teacher:teacher_detail' teacher.id %}" class="btn-round">查看详情</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </article>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <!-- pagination -->
+                        <ul class="pagination">
+                            {% if all_teacher_page.has_previous %}
+                                <li><a href="?{{ all_teacher_page.previous_page_number.querystring }}" aria-label="Previous"> <i class="fa fa-angle-left"></i> </a></li>
+                            {% endif %}
+
+                            {% for page in all_teacher_page.pages %}
+                                {% if page %}
+                                    {% ifequal page all_teacher_page.number %}
+                                        <li><a class="active" href="?{{ page.querystring }}">{{ page }}</a></li>
+                                    {% else %}
+                                        <li><a href="?{{ page.querystring }}">{{ page }}</a></li>
+                                    {% endifequal %}
+                                {% else %}
+                                    <li><a href="">...</a></li>
+                                {% endif %}
+                            {% endfor %}
+
+                            {% if all_teacher_page.has_next %}
+                                <li><a href="?{{ all_teacher_page.next_page_number.querystring }}" aria-label="Next"> <i class="fa fa-angle-right"></i> </a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+
+                    <!-- Shop Side Bar -->
+                    <div class="col-md-3">
+                        <div class="recent-post padding-top-20">
+                            <h5>讲师排行榜</h5>
+                            <hr>
+                            {% for teacher in rank_teacher %}
+                                <!-- Recent Posts -->
+                                <div class="media">
+                                    <div class="media-left">
+                                        <a href="{% url 'teacher:teacher_detail' teacher.id %}" class="cart-btn">
+                                            <img class="img-responsive" src="{{ teacher.image.url }}" alt="">
+                                        </a>
+                                    </div>
+                                    <div class="media-body">
+                                        <p>{{ forloop.counter }}</p>
+                                        <a href="{% url 'teacher:teacher_detail' teacher.id %}">
+                                            {{ teacher.name }}
+                                        </a> <span>资历：{{ teacher.work_years }}年</span>
+
+                                    </div>
+                                </div>
+                                <hr>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock %}
+
+{% block js %}
+
+
+{% endblock %}

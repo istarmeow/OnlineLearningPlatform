@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}授课机构主页 - {{ block.super }}{% endblock %}
+
+{% block content %}
+    <!-- Linking -->
+    <div class="linking">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li><a href="#">主页</a></li>
+                <li><a href="{% url 'org:org_list' %}">机构列表</a></li>
+                {% block breadcrumb_org %}
+                    <li class="active">{{ course_org.name }}</li>
+                {% endblock breadcrumb_org %}
+            </ol>
+        </div>
+    </div>
+
+    <div id="content">
+        <section class="padding-bottom-60">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+                        <h4><a href="{% url 'org:org_home' org_id %}">机构首页{% ifequal current_url 'org_home' %}  <i class="fa fa-hand-o-right"></i>{% endifequal %}</a></h4>
+                        <h4><a href="{% url 'org:org_course' org_id %}">机构课程{% ifequal current_url 'org_course' %}  <i class="fa fa-hand-o-right"></i>{% endifequal %}</a></h4>
+                        <h4><a href="{% url 'org:org_teacher' org_id %}">机构讲师{% ifequal current_url 'org_teacher' %}  <i class="fa fa-hand-o-right"></i>{% endifequal %}</a></h4>
+                        <h4><a href="{% url 'org:org_desc' org_id %}">机构介绍{% ifequal current_url 'org_desc' %}  <i class="fa fa-hand-o-right"></i>{% endifequal %}</a></h4>
+
+                        <div class="contact-info">
+                            <div class="item-img"><img class="img-responsive" src="{{ course_org.image.url }}" alt=""></div>
+                            <h4>{{ course_org.name }}</h4>
+                            <hr>
+                            <p>
+                                {% if has_fav %}
+                                    <button id="add_fav_org_button" class="btn-round btn-light" style="background: #FFA042">取消收藏</button>
+                                {% else %}
+                                    <button id="add_fav_org_button" class="btn-round btn-light" style="background: #02DF82">添加收藏</button>
+                                {% endif %}
+                            </p>
+                            <h6>课程数</h6>
+                            <p>xx</p>
+                            <h6>描述</h6>
+                            <p>{{ course_org.desc }}</p>
+                        </div>
+
+                    </div>
+                    <div class="col-md-9">
+                        {#                        机构详情页，可以用这个来被继承#}
+                        {% block org_home_content %}
+                            <section class="padding-top-10 padding-bottom-10">
+                                <div class="container" style="width: auto;">
+                                    <!-- heading -->
+                                    <div class="heading">
+                                        <h2><a href="{% url 'org:org_course' org_id %}">机构课程</a></h2>
+                                        <hr>
+                                    </div>
+
+                                    <!-- heading -->
+                                    <div class="item-col-4">
+                                        {% for course in all_course %}
+                                            <!-- Product -->
+                                            <a href="{% url 'course:course_detail' course.id %}">
+                                                <div class="product">
+                                                    <article>
+                                                        <img class="img-responsive" style="height: 160px; width: auto;"
+                                                             src="{% if course.image %}{{ course.image.url }}{% else %}{% static 'platform/images/default-course.png' %}{% endif %}" alt="">
+                                                        <span class="sale-tag"><i class="fa fa-fire"></i></span>
+
+                                                        <!-- Content -->
+                                                        <span class="tag">{{ course_org }}</span>
+                                                        <span class="tittle" style="min-height: 2px;">{{ course.name }}</span>
+                                                        <!-- Reviews -->
+                                                        <p class="rev"><i class="fa fa-group" title="参加人数"></i> {{ course.students }}
+                                                            <span class="margin-left-50"><i class="fa fa-star" title="收藏人数"></i> {{ course.fav_nums }}</span>
+                                                        </p>
+                                                        <div class="price">课时： {{ course.learn_times }}分钟</div>
+                                                    </article>
+                                                </div>
+                                            </a>
+                                        {% endfor %}
+
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section class="padding-top-10 padding-bottom-10">
+                                <div class="container" style="width: auto;">
+                                    <!-- heading -->
+                                    <div class="heading">
+                                        <h2><a href="{% url 'org:org_teacher' org_id %}">机构讲师</a></h2>
+                                        <hr>
+                                    </div>
+                                    <!-- heading -->
+                                    <div class="item-col-4">
+                                        {% for teacher in all_teacher %}
+                                            <!-- Product -->
+                                            <div class="product">
+                                                <article>
+                                                    <img class="img-responsive" style="height: 160px; width: auto;"
+                                                         src="{% if teacher.image %}{{ teacher.image.url }}{% else %}{% static 'platform/images/default-user.jpg' %}{% endif %}" alt="">
+                                                    {#                                                <span class="sale-tag"><i class="fa fa-fire"></i></span>#}
+
+                                                    <!-- Content -->
+                                                    <span class="tag">{{ teacher.org.name }}</span>
+                                                    <a href="#." class="tittle" style="min-height: 2px;">昵称： {{ teacher.name }}</a>
+                                                    <p>{{ teacher.points }}</p>
+                                                    <!-- Reviews -->
+                                                    <p class="rev"><i class="fa fa-hand-pointer-o" title="点击数"></i> {{ teacher.click_nums }}
+                                                        <span class="margin-left-50"><i class="fa fa-star" title="收藏人数"></i> {{ teacher.fav_nums }}</span>
+                                                    </p>
+                                                    <div class="price">公司：{{ teacher.work_company }}</div>
+                                                </article>
+                                            </div>
+                                        {% endfor %}
+
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section class="padding-top-10 padding-bottom-60">
+                                <div class="container" style="width: auto;">
+                                    <!-- heading -->
+                                    <div class="heading">
+                                        <h2><a href="{% url 'org:org_desc' org_id %}">机构介绍</a></h2>
+                                        <hr>
+                                    </div>
+
+                                    <div class="item-col-12">
+                                        {{ course_org.desc }}
+                                    </div>
+                                </div>
+                            </section>
+                        {% endblock org_home_content %}
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+
+//添加或取消收藏
+function add_fav_org(current_elem, fav_id, fav_type){
+    $.ajax({
+        cache: false,
+        type: "POST",
+        url:"{% url 'org:add_fav' %}",
+        data:{'fav_id':fav_id, 'fav_type':fav_type},
+        async: true,
+        beforeSend:function(xhr, settings){
+            xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+        },
+        success: function(data) {
+            if(data.fav_status === 'fail'){
+                if(data.fav_msg === '用户未登录'){
+                    window.location.href="/login/?next={{ request.path }}";
+                }else{
+                    alert(data.fav_msg)
+                }
+
+            }else if(data.fav_status === 'success'){
+                current_elem.text(data.fav_msg);
+                // 修改按钮的颜色
+                if (data.fav_msg === '取消收藏') {
+                    document.getElementById('add_fav_org_button').style.background = '#FFA042';
+                } else if (data.fav_msg === '添加收藏') {
+                    document.getElementById('add_fav_org_button').style.background = '#02DF82';
+                }
+            }
+        },
+    });
+}
+
+$('#add_fav_org_button').on('click', function(){
+    add_fav_org($(this), {{ course_org.id }}, 2);
+});
+
+</script>
+{% endblock %}

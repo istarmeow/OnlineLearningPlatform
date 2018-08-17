@@ -1,0 +1,77 @@
+{% extends 'org-detail-homepage.html' %}
+
+{% load static %}
+
+{% block title %}讲师列表 - {{ block.super }}{% endblock %}
+
+{% block breadcrumb_org %}
+    <li><a href="{% url 'org:org_home' org_id %}">{{ course_org.name }}</a></li>
+    <li class="active">所有讲师</li>
+{% endblock breadcrumb_org %}
+
+
+{% block org_home_content %}
+    <section class="padding-top-10 padding-bottom-60">
+        <div class="container" style="width: auto;">
+            <!-- heading -->
+            <div class="heading">
+                <div class="short-lst">
+                    <h2>机构讲师</h2>
+                    <ul>
+                        <!-- Short List -->
+                        <li>
+                            <p><a href="{% url 'org:org_teacher' org_id %}" {% ifequal sort '' %} style="font-weight: bold" {% endifequal %}> 点击数(默认) </a></p>
+                        </li>
+                        <li>
+                            <p><a href="{% url 'org:org_teacher' org_id %}?sort=fav" {% ifequal sort 'fav' %} style="color: #BEBEBE" {% endifequal %}> 收藏人数 ↓</a></p>
+                        </li>
+                    </ul>
+                </div>
+                <hr>
+            </div>
+
+            <div class="col-list">
+                {% for teacher in all_teacher %}
+                    <!-- Product -->
+                    <div class="product">
+                        <article>
+                            <!-- Product img -->
+                            <div class="media-left" style="vertical-align: middle;">
+                                <div class="item-img"><img class="img-responsive" src="{% if teacher.image %}{{ teacher.image.url }}{% else %}{% static 'platform/images/default-user.jpg' %}{% endif %}" alt=""></div>
+                            </div>
+                            <!-- Content -->
+                            <div class="media-body">
+                                <div class="row">
+                                    <!-- Content Left -->
+                                    <div class="col-sm-7"><span class="tag">{{ teacher.org.name }}</span>
+                                        <h4><a href="#">{{ teacher.name }}</a></h4>
+                                        <!-- Reviews -->
+
+                                        <ul class="bullet-round-list">
+                                            <li>就职公司：{{ teacher.work_company }}</li>
+                                            <li>工作年限：{{ teacher.work_years }}</li>
+                                            <li>公司职位：{{ teacher.work_position }}</li>
+                                            <li>点击数：{{ teacher.click_nums }}</li>
+                                            <li>收藏数：{{ teacher.fav_nums }}</li>
+                                            <li>教学热点：{{ teacher.points }}</li>
+                                        </ul>
+                                    </div>
+                                    <!-- Content Right -->
+                                    <div class="col-sm-5">
+                                        <p>经典课程一：<span class="in-stock">xxx</span></p>
+                                        <p>经典课程二：<span class="in-stock">xxx</span></p>
+                                        <div class="text-center">
+                                            <div class="position-center-center">
+{#                                                <a href="#." class="btn-round">联系</a>#}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

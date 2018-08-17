@@ -1,0 +1,215 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}授课机构列表 - {{ block.super }}{% endblock %}
+
+{% block content %}
+
+    <!-- Linking -->
+    <div class="linking">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li><a href="#">主页</a></li>
+                <li class="active">机构列表</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div id="content">
+        <!-- Products -->
+        <section class="padding-bottom-60">
+            <div class="container">
+                <div class="row">
+                    <!-- Products -->
+                    <div class="col-md-9">
+                        <div class="short-lst" style="margin-bottom: 0px;">
+                            <ul>
+                                <li><b>机构类别</b></li>
+                                <li><a href="?category=&city={{ city_id }}" {% ifequal category_code '' %} style="color: #BEBEBE" {% endifequal %}> 全部 </a></li>
+                                {% for category in all_category %}
+                                    <li><a href="?category={{ category.code }}&city={{ city_id }}" {% ifequal category_code category.code %}
+                                           style="color: #BEBEBE" {% endifequal %}> {{ category.explain }} </a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="short-lst">
+                            <ul>
+                                <li><b>所在地区</b></li>
+                                <li><a href="?category={{ category_code }}&city=" {% ifequal city_id '' %} style="color: #BEBEBE" {% endifequal %}> 全部 </a></li>
+                                {% for city in all_city %}
+                                    <li><a href="?category={{ category_code }}&city={{ city.id }}" {% ifequal city_id city.id|stringformat:'i' %}
+                                           style="color: #BEBEBE" {% endifequal %}> {{ city.name }} </a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                        <!-- Short List -->
+                        <div class="short-lst">
+                            <h2>授课机构
+                                <small>（共{{ org_nums }}家，本页显示{{ all_org.object_list.count }}家）</small>
+                            </h2>
+                            <ul>
+                                <!-- Short List -->
+                                <li>
+                                    <p><a href="?category={{ category_code }}&city={{ city_id }}" {% ifequal sort '' %} style="font-weight: bold" {% endifequal %}> 全部 </a></p>
+                                </li>
+                                <li>
+                                    <p><a href="?sort=students&category={{ category_code }}&city={{ city_id }}" {% ifequal sort 'students' %} style="color: #BEBEBE" {% endifequal %}> 学习人数 ↓</a></p>
+                                </li>
+                                <li>
+                                    <p><a href="?sort=courses&category={{ category_code }}&city={{ city_id }}" {% ifequal sort 'courses' %} style="color: #BEBEBE" {% endifequal %}>课程数 ↓</a></p>
+                                </li>
+                                <li>
+                                    <p><a href="?sort=fav&category={{ category_code }}&city={{ city_id }}" {% ifequal sort 'fav' %} style="color: #BEBEBE" {% endifequal %}>收藏人数 ↓</a></p>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Items -->
+                        <div class="col-list">
+                            <!-- Product -->
+                            {% for org in all_org.object_list %}
+                                <div class="product">
+                                    <article>
+                                        <!-- Product img -->
+                                        <div class="media-left" style="vertical-align: middle;">
+                                            <div class="item-img"><img class="img-responsive" src="{{ org.image.url }}" alt=""></div>
+                                        </div>
+                                        <!-- Content -->
+                                        <div class="media-body">
+                                            <div class="row">
+                                                <!-- Content Left -->
+                                                <div class="col-sm-7"><span class="tag"></span>
+                                                    <h4><a href="{% url 'org:org_home' org.id %}">{{ org.name }}</a></h4>
+                                                    <!-- Reviews -->
+
+                                                    <ul class="bullet-round-list">
+                                                        <li>课程数：xx</li>
+                                                        <li>学习人数：xx</li>
+                                                        <li>点击数：{{ org.click_nums }}</li>
+                                                        <li>收藏数：{{ org.fav_nums }}</li>
+                                                        <li>经典课程</li>
+                                                    </ul>
+                                                </div>
+                                                <!-- Content Right -->
+                                                <div class="col-sm-5">
+                                                    <p>城市：<span class="in-stock">{{ org.city }}</span></p>
+                                                    <p>地址：<span class="in-stock">{{ org.address }}</span></p>
+                                                    <div class="text-center">
+                                                        <div class="position-center-center">
+                                                            <a href="#." class="btn-round">功能</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </article>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <!-- pagination -->
+                        <ul class="pagination">
+                            {% if all_org.has_previous %}
+                                <li><a href="?{{ all_org.previous_page_number.querystring }}" aria-label="Previous"> <i class="fa fa-angle-left"></i> </a></li>
+                            {% endif %}
+
+                            {% for page in all_org.pages %}
+                                {% if page %}
+                                    {% ifequal page all_org.number %}
+                                        <li><a class="active" href="?{{ page.querystring }}">{{ page }}</a></li>
+                                    {% else %}
+                                        <li><a href="?{{ page.querystring }}">{{ page }}</a></li>
+                                    {% endifequal %}
+                                {% else %}
+                                    <li><a href="">...</a></li>
+                                {% endif %}
+                            {% endfor %}
+
+                            {% if all_org.has_next %}
+                                <li><a href="?{{ all_org.next_page_number.querystring }}" aria-label="Next"> <i class="fa fa-angle-right"></i> </a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+
+                    <!-- Shop Side Bar -->
+                    <div class="col-md-3">
+                        <form role="form" id="contact_form" class="contact-form" method="post" autocomplete="off">
+                            <!-- Payment information -->
+                            <h5>学习咨询
+                                <small id="contact_form_error"></small>
+                            </h5>
+                            <ul class="row">
+                                <li class="col-sm-12">
+                                    <label>
+                                        <input type="text" class="form-control" name="name" placeholder="名字">
+                                    </label>
+                                </li>
+                                <li class="col-sm-12">
+                                    <label>
+                                        <input type="text" class="form-control" name="mobile" placeholder="联系电话">
+                                    </label>
+                                </li>
+                                <li class="col-sm-12">
+                                    <label>
+                                        <input type="text" class="form-control" name="course_name" placeholder="咨询课程">
+                                    </label>
+                                </li>
+                                {% csrf_token %}
+                                <li class="col-sm-12 no-margin">
+                                    <button type="button" value="submit" class="btn-round" id="contact_form_btn">立即咨询</button>
+                                </li>
+                            </ul>
+                        </form>
+
+                        <div class="recent-post padding-top-20">
+                            <h5>热门机构</h5>
+                            <hr>
+                            {% for org in hot_org %}
+                                <!-- Recent Posts -->
+                                <div class="media">
+                                    <div class="media-left"><a href="{% url 'org:org_home' org.id %}" class="cart-btn"><img class="img-responsive" src="{{ org.image.url }}" alt=""></a></div>
+                                    <div class="media-body">
+                                        <p>{{ forloop.counter }}</p>
+                                        <a href="{% url 'org:org_home' org.id %}">
+                                            {{ org.name }}
+                                        </a> <span>{{ org.address }}</span>
+
+                                    </div>
+                                </div>
+                                <hr>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script>
+        $(function () {
+            $('#contact_form_btn').on('click', function () {
+                $.ajax({
+                    cache: false,
+                    type: "POST",
+                    url: "{% url "org:add_ask" %}",
+                    data: $('#contact_form').serialize(),
+                    async: true,
+                    success: function (data) {
+                        if (data.post_statue === 'success') {
+                            $('#contact_form')[0].reset();
+                            $('#contact_form_error').html(data.msg)
+                        } else if (data.post_statue === 'fail') {
+                            $('#contact_form_error').html(data.msg)
+                        }
+                    },
+                });
+            });
+        })
+    </script>
+
+{% endblock %}

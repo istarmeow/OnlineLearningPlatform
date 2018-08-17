@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% load static %}
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    <title> - 重置密码</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/font-awesome.css' %}" rel="stylesheet">
+    <link href="{% static 'css/animate.css' %}" rel="stylesheet">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <link href="{% static 'css/login.css' %}" rel="stylesheet">
+
+</head>
+
+<body class="signin">
+    <div class="signinpanel">
+        <div class="row">
+            <div class="col-sm-12">
+
+				<div class="text-center">
+					<h1 class="logo-name">^-^</h1>
+				</div>
+
+				<h3 class="no-margins">重置修改</h3>
+				<p class="m-t-md">密码重置修改</p>
+                <form method="post" action="{% url 'modify_pwd' %}" autocomplete="off">
+                    <input name='email' type="text" value="{{ email }}" hidden />
+
+                    <input name='password' value="{% if modifypwd_form.password.value %}{{ modifypwd_form.password.value }}{% endif %}" type="password" class="form-control pword m-b" placeholder="密码" />
+                    {% if modifypwd_form.errors.password %}
+                        <span class="help-block m-b-none"> {{ modifypwd_form.errors.password.as_text }}</span>
+                    {% endif %}
+                    <input name='re_password' value="{% if modifypwd_form.re_password.value %}{{ modifypwd_form.re_password.value }}{% endif %}" type="password" class="form-control pword m-b" placeholder="重复密码" />
+                    {% if modifypwd_form.errors.re_password %}
+                        <span class="help-block m-b-none"> {{ modifypwd_form.errors.re_password.as_text }}</span>
+                    {% endif %}
+
+                    {% if msg %}
+                        <div class="alert alert-danger" style="padding: 5px;">
+                            {{ msg }}
+                        </div>
+                    {% endif %}
+
+                    {% csrf_token %}
+
+                    <a href="/login/">返回登录</a>
+                    <button type="submit" class="btn btn-success btn-block">修 改</button>
+                </form>
+            </div>
+        </div>
+        <div class="signup-footer">
+            <div class="pull-left">
+                &copy; 在线学习平台
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

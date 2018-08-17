@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% load static %}
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    <title> - 登录</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/font-awesome.css' %}" rel="stylesheet">
+    <link href="{% static 'css/animate.css' %}" rel="stylesheet">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <link href="{% static 'css/login.css' %}" rel="stylesheet">
+
+</head>
+
+<body class="signin">
+    <div class="signinpanel">
+        <div class="row">
+            <div class="col-sm-12">
+			
+				<div class="text-center">
+					<h1 class="logo-name">^-^</h1>
+				</div>
+			
+				<h3 class="no-margins">登录</h3>
+				<p class="m-t-md">登录到学习平台</p>
+                <form method="post" action="/login/" autocomplete="off">
+                    <input name='username' value="{% if login_form.username.value %}{{ login_form.username.value }}{% endif %}" type="text" class="form-control uname" placeholder="用户名" />
+                    {% if login_form.errors.username %}
+                        <span class="help-block m-b-none"> {{ login_form.errors.username.as_text }}</span>
+                    {% endif %}
+
+                    <input name='password' type="password" class="form-control pword m-b" placeholder="密码" />
+                    {% if login_form.errors.password %}
+                        <span class="help-block m-b-none"> {{ login_form.errors.password.as_text }}</span>
+                    {% endif %}
+
+                    {% if msg %}
+                        <div class="alert alert-danger" style="padding: 5px;">
+                            {{ msg }}
+                        </div>
+                    {% endif %}
+
+                    {% csrf_token %}
+
+                    <a href="/forgetpwd/">忘记密码了？</a>
+                    <button type="submit" class="btn btn-success btn-block">登 录</button>
+                </form>
+            </div>
+        </div>
+        <div class="signup-footer">
+            <div class="pull-left">
+                &copy; 在线学习平台
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

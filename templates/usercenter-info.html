@@ -1,0 +1,431 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}个人中心 - {{ block.super }}{% endblock %}
+
+{% block content %}
+    <!-- Linking -->
+    <div class="linking">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li><a href="#">主页</a></li>
+                <li class="active">个人中心</li>
+            </ol>
+        </div>
+    </div>
+
+    <div id="content">
+
+        <!-- 用户个人中心 -->
+        <section class="shopping-cart padding-bottom-60">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="short-lst">
+                            <h2>我的个人中心</h2>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <img class="img-responsive" src="{{ user.image.url }}" alt="">
+                            <div class="pro-btn"><a href="" class="btn-round btn-light" data-toggle="modal" data-target="#modifyImageModal">修改头像</a></div>
+                            <hr>
+                            <div class="pro-btn"><a href="" class="btn-round btn-light" data-toggle="modal" data-target="#modifyPasswordModal">修改密码</a></div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-8">
+                        <div class="promo light-gry-bg" style="padding-left: 20px; padding-top: 10px; padding-bottom: 10px">
+                            <h6><b>个人信息</b></h6>
+                        </div>
+
+                        <!-- Promotion -->
+                        <form class="form-horizontal" id="js_user_info_form">
+                            <div class="promo">
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">昵&nbsp;&nbsp;&nbsp;&nbsp;称</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" name='nick_name' value="{{ user.nick_name|default_if_none:'' }}">
+                                        <div style="color: white; background: red" id="nick_name_error"></div>
+                                    </div>
+                                </div>
+                                <div class="hr-line-dashed"></div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">生&nbsp;&nbsp;&nbsp;&nbsp;日</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" name="birthday" value="{{ user.birthday|date:'Y-m-d'|default_if_none:'' }}" placeholder="2018-08-08">
+                                        <div style="color: white; background: red" id="birthday_error"></div>
+                                    </div>
+                                </div>
+                                <div class="hr-line-dashed"></div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">性&nbsp;&nbsp;&nbsp;&nbsp;别</label>
+
+                                    <div class="col-sm-10">
+                                        <select class="form-control" name="gender">
+                                            <option value="male" {% ifequal user.gender 'male' %} selected {% endifequal %}>男</option>
+                                            <option value="female" {% ifequal user.gender 'female' %} selected {% endifequal %}>女</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="hr-line-dashed"></div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">住&nbsp;&nbsp;&nbsp;&nbsp;址</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" required name="address" value="{{ user.address|default_if_none:'' }}">
+                                        <div style="color: white; background: red" id="address_error"></div>
+                                    </div>
+                                </div>
+                                <div class="hr-line-dashed"></div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">手机号</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" name="mobile" required value="{{ user.mobile|default_if_none:'' }}">
+                                        <div style="color: white; background: red" id="mobile_error"></div>
+                                    </div>
+                                </div>
+                                <div class="hr-line-dashed"></div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">邮&nbsp;&nbsp;&nbsp;&nbsp;箱</label>
+
+                                    <div class="col-sm-8">
+                                        <input type="text" disabled="" name="email" value="{{ user.email }}" class="form-control">
+                                    </div>
+                                    <div class="col-sm-2 control-label">
+                                        <a href="#" data-toggle="modal" data-target="#modifyEmailModal"><b>[ 修改 ]</b></a>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-sm-6 col-md-offset-2" id="usercenter_msg"></div>
+                                </div>
+                            </div>
+
+                            {% csrf_token %}
+
+                            <!-- Button -->
+                            <div class="pro-btn">
+                                <button class="btn-round" type="button" id="js_user_info_button">保存修改</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+
+            </div>
+        </section>
+
+    </div>
+
+
+    <!-- 模态框（Modal） -->
+    <!-- 修改邮箱模态框 -->
+    <div class="modal fade padding-top-150" id="modifyEmailModal" tabindex="-1" role="dialog" aria-labelledby="modifyEmailModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h5 class="modal-title" id="modifyEmailLabel">
+                        邮箱修改 &nbsp;&nbsp;
+                        <small id="email_msg" style="color: red"></small>
+                    </h5>
+                </div>
+
+                <div class="modal-body">
+                    <form class="form-horizontal" id="js_modify_email_form">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">旧&nbsp;邮&nbsp;箱</label>
+                            <div class="col-sm-10" style="width: 80%">
+                                <input type="text" class="form-control" value="{{ user.email }}" disabled>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">新&nbsp;邮&nbsp;箱</label>
+                            <div class="col-sm-10" style="width: 80%">
+                                <input type="text" class="form-control" name='new_email' id="new_email" value="" placeholder="请输入新邮箱地址" required>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">验&nbsp;证&nbsp;码</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" name='code' value="" required>
+                            </div>
+                            <div class="col-sm-4 text-center">
+                                <button type="button" class="btn-round" style="padding: 4px 10px;" id="send_email_button" onclick="send_email()">获取验证码</button>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        {% csrf_token %}
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <div class="pro-btn">
+                        <button type="button" class="btn-round btn-light" data-dismiss="modal" onclick="recovery_button()">关闭
+                        </button>
+                        <button class="btn-round" id="js_modify_email_button">
+                            提交更改
+                        </button>
+                    </div>
+                </div>
+
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+    <!-- 修改密码模态框 -->
+    <div class="modal fade padding-top-150" id="modifyPasswordModal" tabindex="-1" role="dialog" aria-labelledby="modifyPasswordModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h5 class="modal-title" id="myModalLabel">
+                        密码修改 &nbsp;&nbsp;
+                        <small id="modify_msg" style="color: red"></small>
+                    </h5>
+                </div>
+                <div class="modal-body">
+                    <form method="get" class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">新密码</label>
+                            <div class="col-sm-10" style="width: 80%">
+                                <input type="password" class="form-control" id="password" name='password' value="">
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">再次输入</label>
+                            <div class="col-sm-10" style="width: 80%">
+                                <input type="password" class="form-control" id="re_password" name='re_password' value="">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <div class="pro-btn">
+                        <button type="button" class="btn-round btn-light" data-dismiss="modal">关闭
+                        </button>
+                        <button type="button" class="btn-round" id="modify_pwd_modal">
+                            提交更改
+                        </button>
+                    </div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+    <!-- 修改头像模态框 -->
+    <div class="modal fade padding-top-150" id="modifyImageModal" tabindex="-1" role="dialog" aria-labelledby="modifyImageModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h5 class="modal-title" id="myModalLabel">
+                        头像修改 &nbsp;
+                        <small id="upload_msg" style="color: red">选择文件后自动上传修改</small>
+                    </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <img class="img-responsive" src="{{ user.image.url }}" alt="">
+                        </div>
+                        <div class="col-md-4" style="text-align: center; vertical-align: middle;">
+                            <input name="image" type="file" onchange="upload_image()" id="choose_image">
+                            <br><br>
+                            ========修改为======>
+                        </div>
+                        <div class="col-md-4">
+                            <img class="img-responsive" src="{{ user.image.url }}" alt="" id="show_image">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="pro-btn">
+                        <button type="button" class="btn-round btn-light" data-dismiss="modal" onclick="javascript:location.reload();">关闭
+                            <!-- 点击关闭自动刷新页面 -->
+                        </button>
+                    </div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+{% endblock %}
+
+
+{% block js %}
+
+    <script type="text/javascript">
+        // 修改密码模态框提交
+        $('#modify_pwd_modal').on('click', function () {
+            let password = $('#password').val();
+            let re_password = $('#re_password').val();
+
+            $.ajax({
+                cache: false,
+                type: "POST",
+                url: "{% url 'usercenter:user_modify_pwd' %}",
+                data: {'password': password, 're_password': re_password},
+                async: true,
+                beforeSend: function (xhr, settings) {
+                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                },
+                success: function (data) {
+                    if (data.modify_status === 'fail') {
+                        //alert(data.modify_msg);
+                        $('#modify_msg').html(data.modify_msg);
+
+                    } else if (data.modify_status === 'success') {
+                        $('#modify_msg').html(data.modify_msg);
+                    }
+                },
+            });
+        });
+
+        //上传图片
+        function upload_image() {
+            let formData = new FormData();
+            //let image_file = document.getElementById('choose_image').files[0];
+            //alert(image_file);
+
+            formData.append('image', $('#choose_image')[0].files[0]);
+
+            $.ajax({
+                cache: false,
+                type: "POST",
+                url: "{% url 'usercenter:user_image_upload' %}",
+                data: formData,
+                // 告诉jQuery不要去处理发送的数据
+                processData: false,
+                // 告诉jQuery不要去设置Content-Type请求头
+                contentType: false,
+                mimeType: "multipart/form-data",
+                dataType: "json",
+                async: true,
+                beforeSend: function (xhr, settings) {
+                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                },
+                success: function (data) {
+                    $('#upload_msg').html(data.upload_msg);
+
+                    if (data.upload_status === 'fail') {
+                        //alert(data.upload_msg);
+                        //$('#upload_msg').html(data.upload_msg);
+
+                    } else if (data.upload_status === 'success') {
+                        //alert(data.image_url);
+                        document.getElementById('show_image').src = data.image_url;
+                    }
+                },
+            });
+        }
+
+        //修改邮箱发送验证码
+        function send_email() {
+            let new_email = document.getElementById('new_email').value;
+
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: "{% url 'usercenter:user_send_verify_code' %}?new_email=" + new_email,
+                dataType: "json",
+                async: true,
+
+                success: function (data) {
+                    document.getElementById('email_msg').innerText = data.email_msg;
+                    if (data.email_status === 'success') {
+                        $('#send_email_button').attr('disabled', true);  // 发送邮件按钮变为不可点击
+                        $('#send_email_button').html('已发验证码');  // 发送邮件文字修改
+                        $('#new_email').attr('disabled', true);  // 输入框变为不可输入
+                    } else {
+                        $('#send_email_button').attr('disabled', false);  // 邮件发送失败按钮可点击
+                        $('#send_email_button').html('获取验证码');  // 发送邮件文字修改
+                        $('#new_email').attr('disabled', false);  // 输入框变为输入
+                    }
+                },
+            });
+        }
+
+        //关闭修改邮箱模态框后，发送验证码变为可点击
+        function recovery_button() {
+            $('#send_email_button').attr('disabled', false);  // 邮件发送失败按钮可点击
+            $('#send_email_button').html('获取验证码');  // 发送邮件文字修改
+            $('#new_email').attr('disabled', false);  // 输入框变为输入
+        }
+
+        //提交邮箱修改表单
+        $(function () {
+            $('#js_modify_email_button').on('click', function () {
+                $.ajax({
+                    cache: false,
+                    type: 'POST',
+                    url: '{% url "usercenter:user_save_email_modify" %}',
+                    data: $('#js_modify_email_form').serialize(),
+                    async: true,
+                    beforeSend: function (XMLHttpRequest) {
+                        $('#send_email_button').val('发送中...');
+                        $('#new_email').attr('disabled', true);  // 输入邮箱禁用
+                        $('#send_email_button').attr('disabled', true);  // 发送验证码按钮禁用
+                        $('#js_modify_email_button').html('验证中...');
+                    },
+                    success: function (data) {
+                        if (data.save_email_status === 'success') {
+                            window.location.reload();
+                            $('#usercenter_msg').html(data.save_email_msg);
+                        } else if (data.save_email_status === 'fail') {
+                            $('#email_msg').html(data.save_email_msg);  // 模态框顶部错误提示
+                            setTimeout(
+                                "$('#js_modify_email_button').html('提交更改')", 1000  //按钮显示1s验证中，验证不通过就恢复
+                            );
+
+                        }
+                    },
+                });
+            });
+        });
+
+        //提交用户信息修改
+        $(function () {
+            $('#js_user_info_button').on('click', function () {
+                $.ajax({
+                    cache: false,
+                    type: 'POST',
+                    url: '{% url "users:user_info" %}',
+                    data: $('#js_user_info_form').serialize(),
+                    async: true,
+                    success: function (data) {
+                        if (data.info_save_status === 'success') {
+                            $('#usercenter_msg').html(data.info_save__msg);
+                            setTimeout(
+                                'window.location.reload()', 1000
+                            );
+                        } else {
+                            $('#nick_name_error').html(data.nick_name);
+                            $('#birthday_error').html(data.birthday);
+                            $('#address_error').html(data.address);
+                            $('#mobile_error').html(data.mobile);
+                        }
+                    },
+                });
+            });
+        })
+    </script>
+
+{% endblock %}
