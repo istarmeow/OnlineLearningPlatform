@@ -54,6 +54,7 @@ class Course(models.Model):
     teacher = models.ForeignKey(Teacher, related_name='courses', null=True, blank=True, on_delete=models.SET_NULL, verbose_name='讲师')
     notes = models.CharField(max_length=20, default='人生苦短，我用Python！', verbose_name='课程须知')
     tell_you = models.CharField(max_length=20, default='', verbose_name='讲师告诉你学到了什么')
+    is_banner = models.BooleanField(default=False, verbose_name='是否轮播')
 
     class Meta:
         verbose_name = verbose_name_plural = '课程'

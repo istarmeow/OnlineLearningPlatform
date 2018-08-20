@@ -25,11 +25,13 @@ import xadmin
 from users.views import user_login, LoginView, RegisterView, ActiveUserView, ForgetPwdView, RestpwdView, ModifypwdView, LogoutView
 
 from organization.views import OrgListView
+from users.views import IndexView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('xadmin/', xadmin.site.urls),
-    path('', TemplateView.as_view(template_name='index.html'), name='index'),
+    # path('', TemplateView.as_view(template_name='index.html'), name='index'),
+    path('', IndexView.as_view(), name='index'),
     # path('login/', TemplateView.as_view(template_name='login.html'), name='login'),
     # path('login/', user_login, name='login'),
     path('login/', LoginView.as_view(), name='login'),  # 基于类方法实现登录,这里是调用它的方法

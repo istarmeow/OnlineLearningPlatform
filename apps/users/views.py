@@ -19,6 +19,7 @@ from utils.email_send import send_register_email
 from operation.models import UserCourse, UserFavorite, UserMessage
 from courses.models import Course
 from organization.models import Teacher, CourseOrg
+from users.models import Banner
 
 
 # 自定义登录，可使用邮箱和账号
@@ -474,4 +475,15 @@ class MyMessageView(LoginRequiredMixin, View):
         return render(request, 'usercenter-msg.html', locals())
 
 
-
+class IndexView(View):
+    def get(self, request):
+        all_banner = Banner.objects.all()
+        first_org = CourseOrg.objects.order_by('-students', '-click_nums', '-fav_nums').first()  # 最火机构
+        first_teacher = Teacher.objects.order_by('-fav_nums', '-click_nums').first()  # 最强讲师
+        # 课程位，取4个进行显示
+        courses = Course.objects.all()[:8]
+        # 轮播图课程位取1个显示
+        banner_course = Course.objects.filter(is_banner=True).first()
+        # 课程机构
+        course_orgs = CourseOrg.objects.all()
+        return render(request, 'index.html', locals())
