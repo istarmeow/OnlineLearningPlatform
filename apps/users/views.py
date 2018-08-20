@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, HttpResponse, HttpResponseRedirect, reverse
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.backends import ModelBackend
 from django.db.models import Q
@@ -77,7 +77,8 @@ class LoginView(View):
             # 认证成功返回user对象，失败返回null
             if user:
                 login(request, user)
-                return render(request, 'index.html')
+                # return render(request, 'index.html')
+                return HttpResponseRedirect(reverse('index'))
             else:
                 return render(request, 'login.html',
                               {
@@ -487,3 +488,21 @@ class IndexView(View):
         # 课程机构
         course_orgs = CourseOrg.objects.all()
         return render(request, 'index.html', locals())
+
+
+# 全局404处理函数
+def page_not_found(request):
+    from django.shortcuts import render_to_response
+    response = render_to_response('404.html')
+    # 设置response的状态码
+    response.status_code = 404
+    return response
+
+
+# 全局500处理函数
+def page_error(request):
+    from django.shortcuts import render_to_response
+    response = render_to_response('500.html')
+    # 设置response的状态码
+    response.status_code = 500
+    return response

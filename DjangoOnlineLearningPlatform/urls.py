@@ -19,6 +19,8 @@ from django.conf.urls.static import static
 from django.conf import settings
 from django.views.generic import TemplateView
 from django.urls import include
+from django.conf import settings
+from django.views.static import serve
 
 import xadmin
 
@@ -56,3 +58,8 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# 全局404页面配置
+handler404 = 'users.views.page_not_found'
+# 全局500配置
+handler500 = 'users.views.page_error'
