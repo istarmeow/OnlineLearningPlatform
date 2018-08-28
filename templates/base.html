@@ -76,6 +76,7 @@
 
     <!-- Header -->
     <header>
+
         <div class="container">
             <div class="logo"><a href="index.html"><img src="{% static 'platform/images/base-logo.png' %}" height="50" width="120" alt=""></a></div>
             <div class="search-cate">
@@ -89,6 +90,7 @@
             </div>
 
             <!-- Cart Part -->
+            {% if request.user.is_authenticated %}
             <ul class="nav navbar-right cart-pop">
                 {% get_user_fav request.user as user_fav %}
                 <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="itm-cont">{{ user_fav.3 }}</span> <i
@@ -130,7 +132,9 @@
                     </ul>
                 </li>
             </ul>
+            {% endif %}
         </div>
+
 
         <!-- Nav -->
         <nav class="navbar ownmenu">
