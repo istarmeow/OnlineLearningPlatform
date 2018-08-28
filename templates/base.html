@@ -1,5 +1,6 @@
 <!doctype html>
 {% load static %}
+{% load user_template_tags %}
 <html class="no-js" lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -89,20 +90,43 @@
 
             <!-- Cart Part -->
             <ul class="nav navbar-right cart-pop">
-                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="itm-cont">3</span> <i
+                {% get_user_fav request.user as user_fav %}
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="itm-cont">{{ user_fav.3 }}</span> <i
                         class="flaticon-shopping-bag"></i>
                     <strong>我的收藏</strong> <br>
-                    <span>共有xxx个收藏</span></a>
+                    <span></span></a>
                     <ul class="dropdown-menu">
+                        <li>收藏的课程(最多显示3条)</li>
+                        {% for course in user_fav.0 %}
                         <li>
-{#                            <div class="media-left"><a href="#." class="thumb"> <img src="images/item-img-1-1.jpg" class="img-responsive" alt=""> </a></div>#}
-                            <div class="media-body"><a href="#." class="tittle">Funda Para Ebook 7" 128GB full HD</a> <span>250 x 1</span></div>
+                            <div class="media-body"><a href="{% url 'course:course_detail' course.id %}" class="tittle">【{{ course.name }}】&nbsp;&nbsp;&nbsp;<b>{{ course.get_degree_display }}</b></a> </div>
                         </li>
+                        {% empty %}
                         <li>
-{#                            <div class="media-left"><a href="#." class="thumb"> <img src="images/item-img-1-2.jpg" class="img-responsive" alt=""> </a></div>#}
-                            <div class="media-body"><a href="#." class="tittle">Funda Para Ebook 7" full HD</a> <span>250 x 1</span></div>
+                            <div class="media-body">暂无</div>
                         </li>
-                        <li class="btn-cart"><a href="#." class="btn-round">View Cart</a></li>
+                        {% endfor %}
+                        <li>收藏的讲师(最多显示3条)</li>
+                        {% for teacher in user_fav.1 %}
+                        <li>
+                            <div class="media-body"><a href="{% url 'teacher:teacher_detail' teacher.id %}" class="tittle">【{{ teacher.name }}】&nbsp;&nbsp;&nbsp;<b>{{ teacher.work_company }}</b></a> </div>
+                        </li>
+                        {% empty %}
+                        <li>
+                            <div class="media-body">暂无</div>
+                        </li>
+                        {% endfor %}
+                        <li>收藏的机构(最多显示3条)</li>
+                        {% for org in user_fav.2 %}
+                        <li>
+                            <div class="media-body"><a href="{% url 'org:org_home' org.id %}" class="tittle">【{{ org.name }}】&nbsp;&nbsp;&nbsp;<b>{{ org.course_nums }} 个课程</b></a> </div>
+                        </li>
+                        {% empty %}
+                        <li>
+                            <div class="media-body">暂无</div>
+                        </li>
+                        {% endfor %}
+                        <li class="btn-cart"><a href="{% url 'usercenter:my_favorite' %}" class="btn-round">我的收藏</a></li>
                     </ul>
                 </li>
             </ul>
